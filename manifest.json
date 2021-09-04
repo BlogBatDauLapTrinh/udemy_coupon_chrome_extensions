@@ -1,0 +1,51 @@
+{
+  "manifest_version": 2,
+
+  "name": "Udemy Coupons",
+  "description": "This extension save your money",
+  "version": "1.0",
+  "icons": {
+    "192": "icons/icon192x192.png",
+    "32": "icons/icon32x32.png",
+    "16": "icons/icon16x16.png"
+  },
+
+  "browser_action": {
+    "default_icon": "icons/icon16x16.png",
+    "default_popup": "popup.html",
+    "default_title": "Hello"
+  },
+
+  "content_scripts": [
+    {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"],
+        "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": ["*.jpg", "*.JPG"],
+
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+  "permissions": [
+          "storage",
+          "notifications",
+          "contextMenus",
+          "activeTab"
+        ],
+  "commands": {
+    "my_command": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "MacCtrl+Shift+F"
+      },
+      "description": "Opens popup"
+    }
+  },
+  "options_page": "options.html",
+  "content_security_policy": "script-src 'self' https://batdaulaptrinh.com; object-src 'self'"
+
+}
