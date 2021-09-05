@@ -25,6 +25,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 })
 
+function fetchAPI(){
+
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=2&page=2&inkw=&discount=100&language=&'
+
+    fetch(apiUrl
+    ).then((response) => {
+        return response.json();
+    })
+        .then((json) => {
+            let courses = getCourse(json)
+            // enroll_courses(courses)
+            chrome.storage.sync.set({ "courses": courses }, function () {
+                console.log('Value is set to ' + courses);
+            });
+
+        }).catch(err => { console.log(err) });
+}
+
 
 function getCourse(json) {
     return json["results"]
