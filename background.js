@@ -4,20 +4,25 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 //background.js
-chrome.runtime.onConnect.addListener(function (port) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    console.log('listening in background' + request)
+    if (request.message == 'fetch_successfully' || request.message == 'enroll_successfully'){
+        chrome.storage.sync.get(['courses'], function(courses) {
+            if (courses.length > 0){
+                open_enroll_course(courses[0])
+                chrome.runtime.sendMessage({ message: courses[0] });
+            }
+        });
+    }
 
-    chrome.storage.sync.get(['courses'], function(courses) {
-        if (courses.length > 0){
-            open_enroll_course(courses[0])
-            port.postMessage({ message: courses[0] });
-        }
-    });
-
-    port.onMessage.addListener(function (message) {
-
-
-
-    });
+    else if (request.message == 'auto_click'){
+        chrome.tabs.update({
+            url: 'http://batdaulaptrinh.com/'
+        });
+        fetchAPI()
+        chrome.runtime.sendMessage({message: 'fetch_successfully'});
+        
+    }
 })
 
 

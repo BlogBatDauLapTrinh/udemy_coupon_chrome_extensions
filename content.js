@@ -1,24 +1,16 @@
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse){
-        if (request == 'auto'){
-            fetchAPI()
+        console.log('listening in content' + request)
+{
+        auto_enroll()
+        remove_succesfully_enroll_course()
+        chrome.runtime.sendMessage({message: 'enroll_successfully'});
         }
     }
 )
 
 
-var port = chrome.runtime.connect({name: "auto_course"});
 
-
-
-port.onMessage.addListener(function(msg) {
-
-    console.log(msg.message)
-    auto_enroll()
-    remove_succesfully_enroll_course()
-
-
-});
 
 function remove_succesfully_enroll_course(){
     chrome.storage.sync.get(['courses'], function(courses){
