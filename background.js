@@ -1,29 +1,41 @@
 chrome.runtime.onInstalled.addListener(function () {
-    var newURL = "https://batdaulaptrinh.com/welcome-to-udemy-extensions/";
-    chrome.tabs.create({ url: newURL });
+    openWelcomePage()
 });
 
 //background.js
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    console.log('listening in background' + request)
-    if (request.message == 'fetch_successfully' || request.message == 'enroll_successfully'){
-        chrome.storage.sync.get(['courses'], function(courses) {
-            if (courses.length > 0){
-                open_enroll_course(courses[0])
-                chrome.runtime.sendMessage({ message: courses[0] });
-            }
-        });
+    // console.log('listening in background' + request)
+    if (request.message == 'enroll_successfully'){
+        enrollACourse()
+        console.log('continue enrolling course')
     }
 
     else if (request.message == 'auto_click'){
-        chrome.tabs.update({
-            url: 'http://batdaulaptrinh.com/'
-        });
         fetchAPI()
-        chrome.runtime.sendMessage({message: 'fetch_successfully'});
-        
+        openNewTab()
+        enrollACourse()
+        console.log('open newtab -> enroll first course')
     }
 })
+
+function openWelcomePage(){
+    var newURL = "https://batdaulaptrinh.com/welcome-to-udemy-extensions/";
+    chrome.tabs.create({ url: newURL });
+}
+
+function openNewTab(){
+    var newURL = "https://batdaulaptrinh.com/welcome-to-udemy-extensions/";
+    chrome.tabs.create({ url: newURL });
+}
+
+function enrollACourse(){
+    chrome.storage.sync.get(['courses'], function(courses) {
+        if (courses.length > 0){
+            open_enroll_course(courses[0])
+            chrome.runtime.sendMessage({ message: courses[0] });
+        }
+    });
+}
 
 function fetchAPI(){
 
@@ -37,7 +49,7 @@ function fetchAPI(){
             let courses = getCourse(json)
             // enroll_courses(courses)
             chrome.storage.sync.set({ "courses": courses }, function () {
-                console.log('Value is set to ' + courses);
+                console.log('background Value is set to ' + courses);
             });
 
         }).catch(err => { console.log(err) });

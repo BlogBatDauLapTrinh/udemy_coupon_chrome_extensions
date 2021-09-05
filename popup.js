@@ -11,10 +11,6 @@ auto_enroll.onclick = function (button) {
     // chrome.tabs.create({ url: "https://batdaulaptrinh.com/" });
     console.log('click auto enroll')
     chrome.runtime.sendMessage({message: 'auto_click'});
-    chrome.tabs.update({
-        url: 'http://batdaulaptrinh.com/'
-    });
-
 }
 
 
