@@ -1,14 +1,20 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    console.log('listening in content' + request)
+    console.log('listening in content' + request.message)
     auto_enroll()
-    remove_succesfully_enroll_course()
-    chrome.runtime.sendMessage({ message: 'enroll_successfully' });
+    removeSuccesfullyEnrollCourse()
+    // chrome.runtime.sendMessage({ message: 'enroll_successfully' });
 
 })
 
+function sendMessage(message){
+    chrome.runtime.sendMessage({ message: message }, function (response) {
+        console.log(message.message)
+        console.log(response);
+      });
+}
 
 
-function remove_succesfully_enroll_course() {
+function removeSuccesfullyEnrollCourse() {
     chrome.storage.sync.get(['courses'], function (courses) {
         courses.shift()
         chrome.storage.sync.set({ "courses": courses }, function () {
@@ -19,7 +25,7 @@ function remove_succesfully_enroll_course() {
 
 
 
-function enroll_course() {
+function enrollCourse() {
     var inputs = document.getElementsByTagName('button');
 
     for (var i = 0; i < inputs.length; i++) {
