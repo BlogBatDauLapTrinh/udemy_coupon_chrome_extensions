@@ -1,19 +1,14 @@
 let KEY = 'STORAGE'
-let NEW_COURSE_KEY = "NEW_COURSE_KEY"
+let NEW_COURSE_KEY = "NEW_COURSE"
 chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
-console.log('new course key is :' + getNewCourseKey())
-if (getNewCourseKey() == true || getNewCourseKey() == 'true'){
-    console.log('send message from background to content' + getNewCourseKey())
-    setNewCourseKey(false);
-    setTimeout(function() {
-        sendMessage('enroll');
-    }, 2000)
-}
+
+
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
+        console.log('listener in background :auto_click')
         console.log('button click')
         fetchAPI()
         setTimeout(openNewTab,400); 
@@ -32,6 +27,23 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 })
 
+chrome.tabs.onUpdated.addListener(function
+    (tabId, changeInfo, tab) {
+        // let key = getNewCourseKey()
+        console.log(typeof(getNewCourseKey(1)))
+      // read changeInfo data and do something with it (like read the url)
+        if (getNewCourseKey(1) == true || getNewCourseKey(1) == 'true'){
+        console.log('send message from background to content' + getNewCourseKey(1))
+        setNewCourseKey(false);
+        setTimeout(function() {
+            sendMessage('enroll');
+        }, 2000)
+    }
+    }
+  );
+
+
+
 function setNewCourseKey(flag){
     chrome.storage.sync.set({ NEW_COURSE_KEY: flag }, function () {
         console.log('set new course key = true ');
@@ -39,9 +51,15 @@ function setNewCourseKey(flag){
 }
 
 function getNewCourseKey(){
+    let temp = undefined
     chrome.storage.sync.get(['NEW_COURSE_KEY'], function (result) {
-        return result['NEW_COURSE_KEY']
+        console.log(typeof(result['NEW_COURSE_KEY']))
+        console.log(result['NEW_COURSE_KEY'])
+        temp = result['NEW_COURSE_KEY']
+        console.log('temp inside is :' + temp)
     })
+    console.log('temp outside is :' + temp)
+    return temp
 }
 
 async function openNewTab(){

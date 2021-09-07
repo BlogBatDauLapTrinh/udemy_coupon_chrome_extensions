@@ -7,8 +7,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         removeSuccesfullyEnrollCourse()
         chrome.runtime.sendMessage({ message: 'complete' });
     }
-    // return true
+    return true
 })
+
 
 
 function sendMessage(msg){
