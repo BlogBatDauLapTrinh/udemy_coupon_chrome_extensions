@@ -1,40 +1,30 @@
 let KEY = 'STORAGE'
-let OPEN_KEY = "OPENKEY"
+let NEW_COURSE_KEY = "NEW_COURSE_KEY"
 chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
 
-// chrome.storage.sync.set({ OPEN_KEY: false }, function () {
-//     console.log('set flag successfully: false' )
-// });
+
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
         console.log('button click')
         fetchAPI()
-        setTimeout(setFlagOpenNewTab,2000);
         setTimeout(openNewTab,400); 
-    }else if (request.message == 'complete' || request.message == 'open_new_tab_successfully') {
+        chrome.storage.sync.set({ NEW_COURSE_KEY: true }, function () {
+            console.log('fetch API successfully KEY ' + courses.length + ' courses');
+        });
+        setTimeout(openEnrollCoursePage,500)
+
+    }else if (request.message == 'complete'){
         console.log('complete enroll')
         openEnrollCoursePage()
-        sendMessage('continue_enrolling')
+        chrome.storage.sync.set({ NEW_COURSE_KEY: true }, function () {
+            console.log('fetch API successfully KEY ' + courses.length + ' courses');
+        });
+        setTimeout(openEnrollCoursePage,500)
     }
 })
-
-async function setFlagOpenNewTab(){
-    let flag = getFlagOpenNewTab()
-    flag = !flag
-    chrome.storage.sync.set({ OPEN_KEY: flag }, function () {
-        console.log('set flag successfully: ' + flag )
-    });
-}
-
-function getFlagOpenNewTab(){
-    chrome.storage.sync.get(['OPEN_KEY'], function (flag) {
-        return flag
-    });
-}
-
 
 
 async function openNewTab(){
@@ -49,18 +39,11 @@ function openWelcomePage() {
     chrome.tabs.create({ url: newURL });
 }
 
-function sendMessage(msg){
-    chrome.runtime.sendMessage({ message: msg }, function (response) {
-        console.log(msg.message)
-        console.log(response);
-      });
-}
-
 function openEnrollCoursePage() {
-    console.log('start nagigating new tab')
-    chrome.storage.sync.get(['KEY'], function (courses) {
+    console.log('start nagigating new course')
+    chrome.storage.sync.get(['KEY'], function (json) {
         console.log('get courses from database')
-        console.log(courses)
+        courses = json['KEY']
         if (courses.length > 0) {
             let urlEnroll = getURLEnroll(courses[0])
 
