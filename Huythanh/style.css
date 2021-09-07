@@ -1,0 +1,146 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+   
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #111;
+}
+
+.container{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+    flex-wrap: wrap;
+}
+
+.container .box{
+    position: relative;
+    width: 320px;
+    height: 400px;
+    color: #fff;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 30px;
+    transition: 0.5s;
+}
+
+.container .box:hover{
+    transform: translateY(-20px);
+
+}
+.container .box::before
+{
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(315deg,#4dff03,#00d0ff);
+}
+
+.container .box::after
+{
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(315deg,#4dff03,#00d0ff);
+    filter: blur(20px);
+}
+
+.container .box span{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    background: rgba(0,0,0,0.9);
+    z-index: 2;
+}
+
+
+.container .box .content{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 6px;
+    z-index: 10;
+    
+    
+    
+}
+.container .box .content .remaining_div{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    text-transform:  uppercase;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4 );
+    background-size: 400%;
+    border-bottom-right-radius: 20px;
+    animation: animate 8s linear infinite;
+}
+@keyframes animate{
+    0%{
+        background-position: 0%;
+    }
+    100%{
+        background-position: 400%;
+    }
+}
+
+.container .box h2{
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #fff;
+    margin: 10px;
+    margin-bottom: 0;
+
+
+}
+.container .box .author_div{
+    font-weight: 100;
+    margin: 10px;
+    margin-top: 5px;
+
+}
+
+
+.container .box .content .rating_div{
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    text-transform:  uppercase;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4 );
+    background-size: 400%;
+    border-top-left-radius: 10px;
+    animation: animate 8s linear infinite;
+   
+}
+
+

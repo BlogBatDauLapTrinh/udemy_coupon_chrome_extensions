@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Tab</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id ="container1" class="container">
+        
+    </div>
+    <script >
+let container_div = document.getElementById('container1');
+let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=300&page=1&inkw=&language='
+
+today = new Date().getTime()
+fetch(apiUrl
+).then((response)=>{
+      return response.json();
+  })
+  .then((json) => {
+      let courses = json["results"]
+      for(let course of courses){
+        
+           //tạo thẻ Ngày còn lại
+            endTime =Date.parse(course['EndTime'])
+            dayLeft = Math.floor((endTime-today)/ (1000 * 60 * 60 * 24))
+            let remaining = document.createElement('d')
+            remaining.classList.add('remaining_div')
+            remaining.textContent = dayLeft + ' day left'
+
+            //tạo thẻ tác giả
+            let author = document.createElement('p');
+            author.classList.add('author_div')
+            author.textContent= course['Author']
+
+
+
+            //tạo thẻ rating
+            let rating = document.createElement('div')
+            rating.classList.add('rating_div')
+            rating.textContent = course['Rating'] +'⭐ /' +course["Reviews"]
+
+
+            //tạo thẻ Img
+            let img = document.createElement('img');
+            img.src = course['ImageUrl'];
+            img.setAttribute('width','100%');
+            
+            //tạo khung card
+            let box = document.createElement('div')
+            box.classList.add("box")
+
+            box.appendChild(document.createElement('span')) 
+
+            let content_div = document.createElement('div')
+            content_div.classList.add("content")
+            box.appendChild(content_div)
+
+
+
+            //Thêm các thành phần vào card
+            content_div.appendChild(img);
+            let h2_title = document.createElement('h2')
+            title = course['Title']
+            h2_title.textContent=title;
+            content_div.append(h2_title)
+            content_div.appendChild(rating)
+            content_div.appendChild(author)
+            content_div.appendChild(remaining)
+            container_div.appendChild(box);
+      }
+      chrome.storage.sync.set({courses:courses });
+  })
+  .catch(err=>{console.log(err)});
+</script>
+</body>
+</html>
