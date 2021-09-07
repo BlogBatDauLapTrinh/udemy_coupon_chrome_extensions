@@ -2,51 +2,57 @@ chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
 
-//background.js
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    // console.log('listening in background' + request)
-    if (request.message == 'enroll_successfully') {
-        enrollACourse()
-        console.log('continue enrolling course')
-    }
 
-    else if (request.message == 'auto_click') {
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.message == 'auto_click') {
+        console.log('button click')
         fetchAPI()
         openNewTab()
-        enrollACourse()
-        console.log('open newtab -> enroll first course')
+        sendMessage('open_new_tab')
+    }else if (request.message == 'complete' || request.message == 'open_new_tab_successfully') {
+        console.log('complete enroll')
+        openEnrollCoursePage()
+        sendMessage('continue_enrolling')
     }
 })
+
+function openNewTab(){
+    var newURL = "chrome://newtab";
+    chrome.tabs.create({ url: newURL });
+}
 
 function openWelcomePage() {
     var newURL = "https://batdaulaptrinh.com/welcome-to-udemy-extensions/";
     chrome.tabs.create({ url: newURL });
 }
 
-function openNewTab() {
-    var newURL = "https://batdaulaptrinh.com/welcome-to-udemy-extensions/";
-    chrome.tabs.create({ url: newURL });
+function sendMessage(msg){
+    chrome.runtime.sendMessage({ message: msg }, function (response) {
+        console.log(msg.message)
+        console.log(response);
+      });
 }
 
-function enrollACourse() {
+function openEnrollCoursePage() {
     chrome.storage.sync.get(['courses'], function (courses) {
-        if (courses.openEnrollCourselength > 0) {
-            (courses[0])
-            // chrome.runtime.sendMessage({ message: courses[0] });
-            sendMessage(courses[0])
+        if (courses.length > 0) {
+            let urlEnroll = getURLEnroll(course[0])
+
+            chrome.tabs.update({
+                url: urlEnroll
+            });
         }
     });
 }
 
-function sendMessage(message) {
+function sendMessage(msg) {
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
         chrome.tabs.query({ active: true }, function (tabs) {
-            const msg = 'Hello from background ?';
-            chrome.tabs.sendMessage(tabs[0].id, { message: message });
+            chrome.tabs.sendMessage(tabs[0].id, { message: msg });
         });
-    }
-    );
+    });
 }
 
 function fetchAPI() {
@@ -78,14 +84,4 @@ function getURLEnroll(course) {
     let idCourse = course['ImageUrl'].split('/')[5].split('_')[0]
     let codeCoupon = course['CouponCode']
     return "https://www.udemy.com/cart/checkout/express/course/" + idCourse + "/?discountCode=" + codeCoupon
-}
-
-
-function openEnrollCourse(course) {
-    console.log("open enroll course")
-    let urlEnroll = getURLEnroll(course)
-
-    chrome.tabs.update({
-        url: urlEnroll
-    });
 }

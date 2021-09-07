@@ -34,7 +34,8 @@
           "storage",
           "notifications",
           "contextMenus",
-          "activeTab"
+          "activeTab",
+          "tabs"
         ],
   "commands": {
     "my_command": {
