@@ -1,11 +1,13 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     alert('In content ' + request.message) 
     if(request.message == 'enroll'){
-        auto_enroll()
+        setTimeout(function() {
+            auto_enroll();
+        }, 5000)
         removeSuccesfullyEnrollCourse()
         chrome.runtime.sendMessage({ message: 'complete' });
     }
-    
+    // return true
 })
 
 

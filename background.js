@@ -5,6 +5,7 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 console.log('new course key is :' + getNewCourseKey())
 if (getNewCourseKey() == true || getNewCourseKey() == 'true'){
+    console.log('send message from background to content' + getNewCourseKey())
     setNewCourseKey(false);
     setTimeout(function() {
         sendMessage('enroll');
@@ -19,7 +20,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         setTimeout(function() {
             setNewCourseKey(true);
         }, 1000)
-        setTimeout(openEnrollCoursePage,500)
+        setTimeout(openEnrollCoursePage,2000)
 
     }else if (request.message == 'complete'){
         console.log('complete enroll')
@@ -60,6 +61,7 @@ function openEnrollCoursePage() {
     chrome.storage.sync.get(['KEY'], function (json) {
         console.log('get courses from database')
         courses = json['KEY']
+        console.log(courses)
         if (courses.length > 0) {
             let urlEnroll = getURLEnroll(courses[0])
 
