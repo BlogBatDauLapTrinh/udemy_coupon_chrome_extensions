@@ -3,17 +3,24 @@ let NEW_COURSE_KEY = "NEW_COURSE_KEY"
 chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
-
-console.log(getNewCourseKey())
+console.log('new course key is :' + getNewCourseKey())
+if (getNewCourseKey() == true || getNewCourseKey() == 'true'){
+    setNewCourseKey(false);
+    setTimeout(function() {
+        sendMessage('enroll');
+    }, 2000)
+}
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
         console.log('button click')
         fetchAPI()
+        setTimeout(openNewTab,400); 
         setTimeout(function() {
             setNewCourseKey(true);
         }, 1000)
-        setTimeout(openNewTab,1000); 
+        setTimeout(openEnrollCoursePage,500)
+
     }else if (request.message == 'complete'){
         console.log('complete enroll')
         openEnrollCoursePage()
@@ -31,8 +38,8 @@ function setNewCourseKey(flag){
 }
 
 function getNewCourseKey(){
-    chrome.storage.sync.get(['KEY'], function (result) {
-        return result
+    chrome.storage.sync.get(['NEW_COURSE_KEY'], function (result) {
+        return result['NEW_COURSE_KEY']
     })
 }
 
@@ -83,7 +90,7 @@ async function fetchAPI() {
         .then((json) => {
             let courses = getCourse(json)
             chrome.storage.sync.set({ KEY: courses }, function () {
-                console.log('fetch API successfully KEY ' + courses.length + ' courses');
+                console.log('set new course key = true ');
             });
         }).catch(err => { console.log('encounter error ' + err) });
 

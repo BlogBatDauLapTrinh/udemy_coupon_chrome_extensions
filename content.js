@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     alert('In content ' + request.message) 
-    if(request.message == 'continue_enrolling'){
+    if(request.message == 'enroll'){
         auto_enroll()
         removeSuccesfullyEnrollCourse()
         chrome.runtime.sendMessage({ message: 'complete' });
