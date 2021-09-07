@@ -4,28 +4,37 @@ chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
 
-
+console.log(getNewCourseKey())
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
         console.log('button click')
         fetchAPI()
-        setTimeout(openNewTab,400); 
-        chrome.storage.sync.set({ NEW_COURSE_KEY: true }, function () {
-            console.log('fetch API successfully KEY ' + courses.length + ' courses');
-        });
-        setTimeout(openEnrollCoursePage,500)
-
+        setTimeout(function() {
+            setNewCourseKey(true);
+        }, 1000)
+        setTimeout(openNewTab,1000); 
     }else if (request.message == 'complete'){
         console.log('complete enroll')
         openEnrollCoursePage()
-        chrome.storage.sync.set({ NEW_COURSE_KEY: true }, function () {
-            console.log('fetch API successfully KEY ' + courses.length + ' courses');
-        });
+        setTimeout(function() {
+            setNewCourseKey(true);
+        }, 1000)
         setTimeout(openEnrollCoursePage,500)
     }
 })
 
+function setNewCourseKey(flag){
+    chrome.storage.sync.set({ NEW_COURSE_KEY: flag }, function () {
+        console.log('set new course key = true ');
+    });
+}
+
+function getNewCourseKey(){
+    chrome.storage.sync.get(['KEY'], function (result) {
+        return result
+    })
+}
 
 async function openNewTab(){
     console.log('opened new tab')
