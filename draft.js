@@ -146,7 +146,7 @@ function enroll_courses(courses) {
 
 
 
-let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=1&page=1&inkw=&language='
+let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=20&page=1&inkw=&language='
 
 fetch(apiUrl
 ).then((response) => {
@@ -154,7 +154,7 @@ fetch(apiUrl
 })
     .then((json) => {
         let courses = getCourse(json)
-        enroll_courses(courses)
+        console.log(courses)
 
     }).catch(err => { console.log(err) });
 

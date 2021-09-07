@@ -13,7 +13,7 @@
   "browser_action": {
     "default_icon": "icons/icon16x16.png",
     "default_popup": "popup.html",
-    "default_title": "Hello"
+    "default_title": "Hello"  
   },
 
   "content_scripts": [
@@ -34,7 +34,8 @@
           "storage",
           "notifications",
           "contextMenus",
-          "activeTab"
+          "activeTab",
+          "tabs"
         ],
   "commands": {
     "my_command": {
