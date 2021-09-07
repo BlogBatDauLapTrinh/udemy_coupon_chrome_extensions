@@ -1,8 +1,6 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     alert('In content ' + request.message) 
-    if(request.message == 'open_new_tab'){
-        chrome.runtime.sendMessage('open_new_tab_successfully')
-    }else if(request.message == 'continue_enrolling'){
+    if(request.message == 'continue_enrolling'){
         auto_enroll()
         removeSuccesfullyEnrollCourse()
         chrome.runtime.sendMessage({ message: 'complete' });
