@@ -1,4 +1,10 @@
 let KEY = 'STORAGE'
+if(isPurchased()){
+    setTimeout(function() {
+        sendMessage('complete');
+    }, 3000)
+}
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // alert('In content message is ' + request.message + ' and location.href ' + location.href) 
     if(request.message == 'enroll'){
@@ -7,11 +13,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             // if ()
             enrollCourse();
         }, 3000)
-        if(location.href.includes('success') || isPurchased()){
-            chrome.runtime.sendMessage({ message: 'complete' });
+        if(location.href.includes('success')){
+            // chrome.runtime.sendMessage({ message: 'complete' });
+            sendMessage('complete')
         }
     }
 })
+
 
 function sendMessage(msg){
     chrome.runtime.sendMessage({ message: msg }, function (response) {
@@ -32,13 +40,9 @@ function enrollCourse() {
 }
 
 function isPurchased() {
-    var allB = document.getElementsByTagName('b');
-    for (var i = 0; i < allB.length; i++) {
-        if (allB[i].textContent.includes('You purchased this course')) {
-            // alert('this course was buy')
-            return true
-        }
+    var referrer = document.referrer;
+    if (referrer == ''){
+        return false
     }
-    return false
-
+    return true
 }
