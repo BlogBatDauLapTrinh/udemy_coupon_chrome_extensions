@@ -17,18 +17,16 @@ chrome.tabs.onUpdated.addListener(function
                         chrome.tabs.sendMessage(tabs[0].id, { message: 'enroll' });
                     });
                 });
-                console.log('send message from background to content ' + flag)
+                // console.log('send message from background to content ' + flag)
             }, 0)
         }
     })
 
 });
 
-
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
-        console.log('button click')
+        // console.log('button click')
         fetchAPI()
         setTimeout(openNewTab, 500);
         setTimeout(function () {
@@ -39,15 +37,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.message == 'complete') {
         removeSuccesfullyEnrollCourse()
         console.log('complete enroll')
-        setTimeout(openEnrollCoursePage,1000)
         setTimeout(function () {
             setNewCourseKey(true);
         }, 1000)
         setTimeout(openEnrollCoursePage, 2000)
     }
 })
-
-
 
 function setNewCourseKey(flag) {
     chrome.storage.sync.set({ NEW_COURSE_KEY: flag }, function () { });
@@ -57,15 +52,15 @@ function setNewCourseKey(flag) {
 function removeSuccesfullyEnrollCourse() {
     chrome.storage.sync.get(['KEY'], function (result) {
         courses = result['KEY']
-        courses.shift()
-        chrome.storage.sync.set({ "courses": courses }, function () {
-            // alert('update data after enroll suceessfully' + courses);
+        courses = courses.slice(1)
+        chrome.storage.sync.set({'KEY': courses }, function () {
+            console.log('update data after enroll suceessfully' + courses.length);
         });
     })
 }
 
 async function openNewTab() {
-    console.log('opened new tab')
+    // console.log('opened new tab')
     var newURL = "chrome://newtab";
     // newURL = "https://batdaulaptrinh.com/welcome-to-udemy-extensions/";
     chrome.tabs.create({ url: newURL });
@@ -81,8 +76,8 @@ function openEnrollCoursePage() {
     chrome.storage.sync.get(['KEY'], function (json) {
         courses = json['KEY']
         if (courses.length > 0) {
-            let urlEnroll = getURLEnroll(courses[0])
-            console.log('start navigating new course ' + urlEnroll)
+            let urlEnroll = getURLEnroll(courses[3])
+            // console.log('start navigating new course ' + urlEnroll)
             chrome.tabs.update({
                 url: urlEnroll
             });
@@ -101,7 +96,8 @@ function sendMessage(msg) {
 
 async function fetchAPI() {
 
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=2&inkw=&discount=100&language=&'
+    // let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=0&inkw=&discount=100&language=&'
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=10&inkw=&discount=100&language='
 
     fetch(apiUrl
     ).then((response) => {
@@ -110,7 +106,7 @@ async function fetchAPI() {
         .then((json) => {
             let courses = getCourse(json)
             chrome.storage.sync.set({ KEY: courses }, function () {
-                console.log('set new course key = true ');
+                // console.log('set new course key = true ');
             });
         }).catch(err => { console.log('encounter error ' + err) });
 
