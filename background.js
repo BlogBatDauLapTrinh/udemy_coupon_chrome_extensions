@@ -37,8 +37,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         setTimeout(openEnrollCoursePage, 500)
 
     } else if (request.message == 'complete') {
+        removeSuccesfullyEnrollCourse()
         console.log('complete enroll')
-        openEnrollCoursePage()
+        setTimeout(openEnrollCoursePage,1000)
         setTimeout(function () {
             setNewCourseKey(true);
         }, 1000)
@@ -52,6 +53,16 @@ function setNewCourseKey(flag) {
     chrome.storage.sync.set({ NEW_COURSE_KEY: flag }, function () { });
 }
 
+
+function removeSuccesfullyEnrollCourse() {
+    chrome.storage.sync.get(['KEY'], function (result) {
+        courses = result['KEY']
+        courses.shift()
+        chrome.storage.sync.set({ "courses": courses }, function () {
+            // alert('update data after enroll suceessfully' + courses);
+        });
+    })
+}
 
 async function openNewTab() {
     console.log('opened new tab')
