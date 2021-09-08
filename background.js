@@ -8,7 +8,7 @@ chrome.tabs.onUpdated.addListener(function
     (tabId, changeInfo, tab) {
     chrome.storage.sync.get(['NEW_COURSE_KEY'], function (result) {
         flag = result['NEW_COURSE_KEY']
-        if (flag == true && 'udemy.com' in changeInfo.url) {
+        if (flag == true) {
             setNewCourseKey(false);
             setTimeout(function () {
                 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
