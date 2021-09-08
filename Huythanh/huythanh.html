@@ -15,7 +15,7 @@
     </div>
     <script >
 let container_div = document.getElementById('container1');
-let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=300&page=1&inkw=&language='
+let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=99&page=2&inkw=&language='
 
 today = new Date().getTime()
 fetch(apiUrl
@@ -28,22 +28,34 @@ fetch(apiUrl
         
            //tạo thẻ Ngày còn lại
             endTime =Date.parse(course['EndTime'])
-            dayLeft = Math.floor((endTime-today)/ (1000 * 60 * 60 * 24))
-            let remaining = document.createElement('d')
+            timeLeft = new Date(endTime-today)
+             
+            let remaining = document.createElement('div')
             remaining.classList.add('remaining_div')
-            remaining.textContent = dayLeft + ' day left'
-
+            dayLeft = timeLeft.getDate()-1
+            remaining.textContent = dayLeft != 0 ? dayLeft === 1 ? dayLeft + ' day left' : dayLeft+ " days left" : timeLeft.getHours() === 1 ? timeLeft.getHours() + " hour left":  timeLeft.getHours() + " hour lefts"
+            
             //tạo thẻ tác giả
             let author = document.createElement('p');
             author.classList.add('author_div')
-            author.textContent= course['Author']
+            auContent=course['Author']
+            if (auContent != null) 
+            author.textContent= auContent.length>40 ? auContent.substring(0,37)+"..." : auContent
 
+            //tạo thẻ category
+            let category = document.createElement('div')
+            category.classList.add('category')
+            category.textContent = course['Category']
 
+            //tạo thẻ review
+            let review = document.createElement('div')
+            review.classList.add('review')
+            review.innerHTML= course['Reviews'] + '✍'
 
             //tạo thẻ rating
             let rating = document.createElement('div')
             rating.classList.add('rating_div')
-            rating.textContent = course['Rating'] +'⭐ /' +course["Reviews"]
+            rating.textContent = course['Rating'] +'⭐'
 
 
             //tạo thẻ Img
@@ -61,6 +73,9 @@ fetch(apiUrl
             content_div.classList.add("content")
             box.appendChild(content_div)
 
+            //tao thẻ link
+            let link= document.createElement('a')
+            link.setAttribute('href', course['CouponLink'])
 
 
             //Thêm các thành phần vào card
@@ -70,9 +85,12 @@ fetch(apiUrl
             h2_title.textContent=title;
             content_div.append(h2_title)
             content_div.appendChild(rating)
-            content_div.appendChild(author)
+            if (auContent != null) content_div.appendChild(author)
             content_div.appendChild(remaining)
-            container_div.appendChild(box);
+            content_div.appendChild(category)
+            content_div.appendChild(review)
+            link.appendChild(box)
+            container_div.appendChild(link);
       }
       chrome.storage.sync.set({courses:courses });
   })
