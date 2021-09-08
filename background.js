@@ -64,7 +64,7 @@ function sendMessage(msg) {
 async function fetchAPI() {
 
     // let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=0&inkw=&discount=100&language=&'
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=8&page=7&inkw=&discount=100&language='
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=12&inkw=&discount=100&language='
 
     fetch(apiUrl
     ).then((response) => {

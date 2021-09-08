@@ -1,5 +1,5 @@
 let KEY = 'STORAGE'
-if(isPurchased()){
+if(isPurchased() || isExpired()){
     setTimeout(function() {
         sendMessage('complete');
     }, 3000)
@@ -12,10 +12,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             // alert('log thu phat')
             // if ()
             enrollCourse();
-        }, 3000)
+        }, 2000)
         if(location.href.includes('success')){
-            // chrome.runtime.sendMessage({ message: 'complete' });
-            sendMessage('complete')
+            setTimeout(function() {
+                sendMessage('complete');
+            }, 3000) 
         }
     }
 })
@@ -37,6 +38,16 @@ function enrollCourse() {
         }
     }
 
+}
+
+function isExpired(){
+    var inputs = document.getElementsByTagName('button');
+    for (var i = 0; i < inputs.length; i++) {
+        // alert(inputs[i].textContent)
+        if (inputs[i]["type"] == 'submit' && inputs[i].textContent == 'Complete Payment') {
+            return true
+        }
+    }
 }
 
 function isPurchased() {
