@@ -6,8 +6,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             // alert('log thu phat')
             // if ()
             enrollCourse();
-        }, 5000)
-        if(location.href.includes('success') ){
+        }, 3000)
+        if(location.href.includes('success') || isPurchased()){
             chrome.runtime.sendMessage({ message: 'complete' });
         }
     }
@@ -34,7 +34,8 @@ function enrollCourse() {
 function isPurchased() {
     var allB = document.getElementsByTagName('b');
     for (var i = 0; i < allB.length; i++) {
-        if (allB[i].textContent == 'You purchased this course') {
+        if (allB[i].textContent.includes('You purchased this course')) {
+            // alert('this course was buy')
             return true
         }
     }
