@@ -1,35 +1,32 @@
 let KEY = 'STORAGE'
-let NEW_COURSE_KEY = "NEW_COURSE"
 chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
+        let START_INDEX = 0
         fetchAPI()
         setTimeout(openNewTab, 1000);
-        setTimeout(openEnrollCoursePage, 1000)
-        sendMessage('enroll')
+        setTimeout(function(){
+            openEnrollCoursePage(START_INDEX)
+        }, 1000)
+        setTimeout(function(){
+            sendMessage('enroll',START_INDEX)
+        }, 1000)
+        
 
-    } else if (request.message == 'complete') {
-        removeSuccesfullyEnrollCourse()
-        console.log('complete enroll')
-        setTimeout(openEnrollCoursePage, 1000)
-        sendMessage('enroll')
+    } else if (request.message['command'] == 'complete') {
+        // console.log('get backmessage '+request.message["command"])
+        let nextIndex = request.message['index'] + 1 
+        setTimeout(function(){
+            openEnrollCoursePage(nextIndex)
+        }, 1000)
     }
 })
 
-function removeSuccesfullyEnrollCourse() {
-    chrome.storage.sync.get(['KEY'], function (result) {
-        courses = result['KEY']
-        courses = courses.slice(1)
-        chrome.storage.sync.set({'KEY': courses }, function () {
-            console.log('update data after enroll suceessfully' + courses.length);
-        });
-    })
-}
 
-async function openNewTab() {
+function openNewTab() {
     var newURL = "chrome://newtab";
     chrome.tabs.create({ url: newURL });
 }
@@ -39,12 +36,15 @@ function openWelcomePage() {
     chrome.tabs.create({ url: newURL });
 }
 
-function openEnrollCoursePage() {
+function openEnrollCoursePage(index) {
     
     chrome.storage.sync.get(['KEY'], function (json) {
-        courses = json['KEY']
-        if (courses.length > 0) {
-            let urlEnroll = getURLEnroll(courses[0])
+        courses = json['KEY']['courses']
+        console.log(index+'/'+courses.length)
+        // index = json['KEY']['index']
+        if (index < courses.length) {
+            sendMessage('enroll',index)
+            let urlEnroll = getURLEnroll(courses[index])
             chrome.tabs.update({
                 url: urlEnroll
             });
@@ -52,19 +52,18 @@ function openEnrollCoursePage() {
     });
 }
 
-function sendMessage(msg) {
+function sendMessage(command,index) {
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
         chrome.tabs.query({ active: true }, function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { message: msg });
+            chrome.tabs.sendMessage(tabs[0].id, { message: {'command':command,'index':index} });
         });
     });
 }
 
 async function fetchAPI() {
 
-    // let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=0&inkw=&discount=100&language=&'
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=1&inkw=&discount=100&language='
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=3&page=50&inkw=&discount=100&language='
 
     fetch(apiUrl
     ).then((response) => {
@@ -72,7 +71,7 @@ async function fetchAPI() {
     })
         .then((json) => {
             let courses = getCourse(json)
-            chrome.storage.sync.set({ KEY: courses }, function () {
+            chrome.storage.sync.set({ KEY: {'courses':courses,'index':0} }, function () {
                 // console.log('set new course key = true ');
             });
         }).catch(err => { console.log('encounter error ' + err) });

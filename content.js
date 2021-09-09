@@ -1,30 +1,33 @@
 let KEY = 'STORAGE'
 
-
+// message: {'command':command,'index':index}
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    // alert('In content message is ' + request.message + ' and location.href ' + location.href) 
-    if(request.message == 'enroll'){
+    // alert('In content message is ' + request.message['command'] +request.message['index']+ ' and location.href ' + location.href) 
+    if(request.message['command'] == 'enroll'){
         setTimeout(function() {
-            // alert('log thu phat')
-            // if ()
             enrollCourse();
         }, 3000)
+        let index = request.message['index']
+        // alert(index)
         if(location.href.includes('success')){
+            // alert('send back message complete')
             setTimeout(function() {
-                sendMessage('complete');
+                sendMessage('complete',index);
             }, 2000) 
         }
+
         if(isPurchased() || isExpired()){
+            // alert('send back message expired or purchased')
             setTimeout(function() {
-                sendMessage('complete');
+                sendMessage('complete',index);
             }, 2000)
         }
     }
 })
 
 
-function sendMessage(msg){
-    chrome.runtime.sendMessage({ message: msg }, function (response) {
+function sendMessage(command,index){
+    chrome.runtime.sendMessage({ message: {'command':command,'index':index} }, function (response) {
         // alert('send message from content (message : ' + msg + ') + ( respone : ' + response +' )')
     });
 }
@@ -36,6 +39,7 @@ function enrollCourse() {
         // alert(inputs[i].textContent)
         if (inputs[i]["type"] == 'submit' && inputs[i].textContent == 'Enroll now') {
             inputs[i].click()
+            return
         }
     }
 
