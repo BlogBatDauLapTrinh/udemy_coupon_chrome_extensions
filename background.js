@@ -7,14 +7,14 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
         fetchAPI()
-        setTimeout(openNewTab, 300);
+        setTimeout(openNewTab, 1000);
         setTimeout(openEnrollCoursePage, 1000)
         sendMessage('enroll')
 
     } else if (request.message == 'complete') {
         removeSuccesfullyEnrollCourse()
         console.log('complete enroll')
-        setTimeout(openEnrollCoursePage, 500)
+        setTimeout(openEnrollCoursePage, 1000)
         sendMessage('enroll')
     }
 })
@@ -64,7 +64,7 @@ function sendMessage(msg) {
 async function fetchAPI() {
 
     // let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=0&inkw=&discount=100&language=&'
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=12&inkw=&discount=100&language='
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=1&inkw=&discount=100&language='
 
     fetch(apiUrl
     ).then((response) => {

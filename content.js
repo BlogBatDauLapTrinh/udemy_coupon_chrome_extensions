@@ -1,9 +1,5 @@
 let KEY = 'STORAGE'
-if(isPurchased() || isExpired()){
-    setTimeout(function() {
-        sendMessage('complete');
-    }, 3000)
-}
+
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // alert('In content message is ' + request.message + ' and location.href ' + location.href) 
@@ -12,11 +8,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
             // alert('log thu phat')
             // if ()
             enrollCourse();
-        }, 2000)
+        }, 3000)
         if(location.href.includes('success')){
             setTimeout(function() {
                 sendMessage('complete');
-            }, 3000) 
+            }, 2000) 
+        }
+        if(isPurchased() || isExpired()){
+            setTimeout(function() {
+                sendMessage('complete');
+            }, 2000)
         }
     }
 })
