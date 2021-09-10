@@ -5,18 +5,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // alert('In content message is ' + request.message + ' and location.href ' + location.href) 
     if(request.message == 'enroll'){
         setTimeout(function() {
-            // alert('log thu phat')
-            // if ()
             enrollCourse();
         }, 3000)
         if(location.href.includes('success')){
             setTimeout(function() {
-                sendMessage('complete');
+                sendMessage('complete_a_course');
             }, 2000) 
         }
         if(isPurchased() || isExpired()){
             setTimeout(function() {
-                sendMessage('complete');
+                sendMessage('can_not_purchases');
             }, 2000)
         }
     }
