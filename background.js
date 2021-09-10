@@ -46,7 +46,7 @@ function getPages() {
 }
 
 function getCurrentPage() {
-    
+
     let current_page = 1;
     chrome.storage.sync.get(['KEY_CURRENT_PAGE'], function (result) {
         current_page = result['KEY_CURRENT_PAGE']
@@ -81,7 +81,7 @@ function openEnrollCoursePage() {
             chrome.tabs.update({
                 url: urlEnroll
             });
-        } else if (fetchNextAPINextPage()){
+        } else if (fetchNextAPINextPage()) {
             openEnrollCoursePage()
         }
     });
@@ -125,7 +125,7 @@ async function fetchAPIAtPageNth(page_nth) {
 }
 
 function updateNumberOfPage() {
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=3&page=2&inkw=&discount=100&language='
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=&page=2&inkw=&discount=100&language='
 
     fetch(apiUrl
     ).then((response) => {
@@ -135,7 +135,6 @@ function updateNumberOfPage() {
             let pages = getPagesFrom(json)
             setPages(pages)
         }).catch(err => { console.log('encounter error ' + err) });
-
 }
 
 
