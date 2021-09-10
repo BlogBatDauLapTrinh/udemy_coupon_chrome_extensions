@@ -122,7 +122,7 @@ function updateNumberOfPage() {
         return response.json();
     })
         .then((json) => {
-            let pages = getPages(json)
+            let pages = getPagesFrom(json)
             setPages(pages)
         }).catch(err => { console.log('encounter error ' + err) });
 
@@ -132,7 +132,7 @@ function updateNumberOfPage() {
 function getCourse(json) {
     return json["results"]
 }
-function getPages(json) {
+function getPagesFrom(json) {
     return json['pages']
 }
 
