@@ -1,6 +1,5 @@
 let KEY = 'STORAGE'
 
-
 if (location.href.includes('success')) {
     setTimeout(function () {
         sendMessage('complete_a_course');
@@ -21,7 +20,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 })
 
-
 function sendMessage(msg) {
     chrome.runtime.sendMessage({ message: msg }, function (response) {
         // alert('send message from content (message : ' + msg + ') + ( respone : ' + response +' )')
@@ -37,7 +35,6 @@ function enrollCourse() {
             inputs[i].click()
         }
     }
-
 }
 
 function isExpired() {
