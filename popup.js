@@ -8,8 +8,7 @@ show_coupons.onclick = function (button) {
 
 let auto_enroll = document.getElementById('auto_enroll')
 auto_enroll.onclick = function (button) {
-    console.log('click auto enroll')
-    chrome.runtime.sendMessage({message: 'auto_click'});
+    chrome.runtime.sendMessage({message:'auto_click'});
 }
 
 
