@@ -1,20 +1,20 @@
-
+let KEY_STORAGE = 'STORAGE'
+let KEY_PAGES = 'KEY_PAGES'
+let KEY_CURRENT_PAGE = 'KEY_CURRENT_PAGE'
 chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
-        let page = request.page
-        fetchAPIAtPageNth(page)
+        fetchAPIAtPageNth(1)
         setTimeout(openNewTab, 1000);
         sendMessage('enroll')
         setTimeout(openEnrollCoursePage, 1500)
-        setOnSwitch()
 
     } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases') {
         removeSuccesfullyEnrollCourse()
-        setTimeout(openEnrollCoursePage, 500)
+        setTimeout(openEnrollCoursePage, 1500)
         sendMessage('enroll')
     }
 })
@@ -29,11 +29,7 @@ function removeSuccesfullyEnrollCourse() {
     })
 }
 
-function setOnSwitch(){
-    chrome.storage.sync.set({ 'KEY_ON_OFF': true }, function () {});
-}
-
-function openNewTab() {
+async function openNewTab() {
     var newURL = "chrome://newtab";
     chrome.tabs.create({ url: newURL });
 }
@@ -47,6 +43,7 @@ function openWelcomePage() {
 function openEnrollCoursePage() {
     chrome.storage.sync.get(['KEY_STORAGE'], function (json) {
         let arrayCourses = json['KEY_STORAGE']
+        // console.log('open course to enroll')
         if (arrayCourses.length > 0) {
             let urlEnroll = arrayCourses[0]
             chrome.tabs.update({
@@ -64,7 +61,8 @@ function sendMessage(msg) {
         });
     });
 }
-function fetchAPIAtPageNth(page_nth) {
+
+async function fetchAPIAtPageNth(page_nth) {
 
     let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=70&page=' + page_nth + '&inkw=&discount=100&language='
 
@@ -87,15 +85,16 @@ function jsonToArrayCourses(courses){
     return simpleJson
 }
 
-function getURLEnroll(course) {
-    let idCourse = course['ImageUrl'].split('/')[5].split('_')[0]
-    let codeCoupon = course['CouponCode']
-    return "https://www.udemy.com/cart/checkout/express/course/" + idCourse + "/?discountCode=" + codeCoupon
-}
 
 function getCourse(json) {
     return json["results"]
 }
 function getPagesFrom(json) {
     return json['pages']
+}
+
+function getURLEnroll(course) {
+    let idCourse = course['ImageUrl'].split('/')[5].split('_')[0]
+    let codeCoupon = course['CouponCode']
+    return "https://www.udemy.com/cart/checkout/express/course/" + idCourse + "/?discountCode=" + codeCoupon
 }
