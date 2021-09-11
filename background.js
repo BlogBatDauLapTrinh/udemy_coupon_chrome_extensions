@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases') {
         removeSuccesfullyEnrollCourse()
-        setTimeout(openEnrollCoursePage, 1500)
+        setTimeout(openEnrollCoursePage, 500)
         sendMessage('enroll')
     }
 })

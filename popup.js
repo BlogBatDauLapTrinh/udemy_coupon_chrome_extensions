@@ -16,4 +16,9 @@ auto_enroll2.onclick = function (button) {
     chrome.runtime.sendMessage({message:'auto_click', page:2});
 }
 
+let options = document.getElementById('options')
+options.onclick = function (button) {
+    chrome.tabs.create({ 'url': 'chrome://extensions/?options=' + chrome.runtime.id });
+}
+
 
