@@ -7,7 +7,8 @@ chrome.runtime.onInstalled.addListener(function () {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
-        fetchAPIAtPageNth(1)
+        let page = request.page
+        fetchAPIAtPageNth(page)
         setTimeout(openNewTab, 1000);
         sendMessage('enroll')
         setTimeout(openEnrollCoursePage, 1500)

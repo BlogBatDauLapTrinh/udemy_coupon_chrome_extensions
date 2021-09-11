@@ -6,9 +6,14 @@ show_coupons.onclick = function (button) {
 }
 
 
-let auto_enroll = document.getElementById('auto_enroll')
-auto_enroll.onclick = function (button) {
-    chrome.runtime.sendMessage({message:'auto_click'});
+let auto_enroll1 = document.getElementById('auto_enroll1')
+auto_enroll1.onclick = function (button) {
+    chrome.runtime.sendMessage({message:'auto_click', page:1});
+}
+
+let auto_enroll2 = document.getElementById('auto_enroll2')
+auto_enroll2.onclick = function (button) {
+    chrome.runtime.sendMessage({message:'auto_click', page:2});
 }
 
 
