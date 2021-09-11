@@ -1,20 +1,26 @@
 let KEY = 'STORAGE'
+let KEY_ON_OFF = 'KEY_ON_OFF'
+chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
+    let isOnSwitch = result['KEY_ON_OFF']
+    if (isOnSwitch) {
+        if (location.href.includes('success')) {
+            setTimeout(function () {
+                sendMessage('complete_a_course');
+            }, 2000)
+        }
+        else if (isPurchased() || isExpired()) {
+            setTimeout(function () {
+                sendMessage('can_not_purchases');
+            }, 2000)
+        }
 
-if (location.href.includes('success')) {
-    setTimeout(function () {
-        sendMessage('complete_a_course');
-    }, 2000)
-}
-else if (isPurchased() || isExpired()) {
-    setTimeout(function () {
-        sendMessage('can_not_purchases');
-    }, 2000)
-}
+    }
+})
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // alert('In content message is ' + request.message + ' and location.href ' + location.href) 
     if (request.message == 'enroll') {
-        setTimeout(function() {
+        setTimeout(function () {
             enrollCourse();
         }, 3000)
     }

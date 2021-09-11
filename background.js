@@ -1,6 +1,7 @@
 let KEY_STORAGE = 'STORAGE'
 let KEY_PAGES = 'KEY_PAGES'
 let KEY_CURRENT_PAGE = 'KEY_CURRENT_PAGE'
+let KEY_ON_OFF = 'KEY_ON_OFF'
 chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
@@ -12,6 +13,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         setTimeout(openNewTab, 1000);
         sendMessage('enroll')
         setTimeout(openEnrollCoursePage, 1500)
+        setOnSwitch()
 
     } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases') {
         removeSuccesfullyEnrollCourse()
@@ -28,6 +30,10 @@ function removeSuccesfullyEnrollCourse() {
             console.log('update data after enroll suceessfully ' + courses.length);
         });
     })
+}
+
+function setOnSwitch(){
+    chrome.storage.sync.set({ 'KEY_ON_OFF': true }, function () {});
 }
 
 async function openNewTab() {
