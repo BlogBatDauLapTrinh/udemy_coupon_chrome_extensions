@@ -1,7 +1,4 @@
-let KEY_STORAGE = 'STORAGE'
-let KEY_PAGES = 'KEY_PAGES'
-let KEY_CURRENT_PAGE = 'KEY_CURRENT_PAGE'
-let KEY_ON_OFF = 'KEY_ON_OFF'
+
 chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
@@ -36,7 +33,7 @@ function setOnSwitch(){
     chrome.storage.sync.set({ 'KEY_ON_OFF': true }, function () {});
 }
 
-async function openNewTab() {
+function openNewTab() {
     var newURL = "chrome://newtab";
     chrome.tabs.create({ url: newURL });
 }
@@ -50,7 +47,6 @@ function openWelcomePage() {
 function openEnrollCoursePage() {
     chrome.storage.sync.get(['KEY_STORAGE'], function (json) {
         let arrayCourses = json['KEY_STORAGE']
-        // console.log('open course to enroll')
         if (arrayCourses.length > 0) {
             let urlEnroll = arrayCourses[0]
             chrome.tabs.update({
@@ -68,8 +64,7 @@ function sendMessage(msg) {
         });
     });
 }
-
-async function fetchAPIAtPageNth(page_nth) {
+function fetchAPIAtPageNth(page_nth) {
 
     let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=70&page=' + page_nth + '&inkw=&discount=100&language='
 
@@ -92,16 +87,15 @@ function jsonToArrayCourses(courses){
     return simpleJson
 }
 
+function getURLEnroll(course) {
+    let idCourse = course['ImageUrl'].split('/')[5].split('_')[0]
+    let codeCoupon = course['CouponCode']
+    return "https://www.udemy.com/cart/checkout/express/course/" + idCourse + "/?discountCode=" + codeCoupon
+}
 
 function getCourse(json) {
     return json["results"]
 }
 function getPagesFrom(json) {
     return json['pages']
-}
-
-function getURLEnroll(course) {
-    let idCourse = course['ImageUrl'].split('/')[5].split('_')[0]
-    let codeCoupon = course['CouponCode']
-    return "https://www.udemy.com/cart/checkout/express/course/" + idCourse + "/?discountCode=" + codeCoupon
 }

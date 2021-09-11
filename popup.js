@@ -1,7 +1,7 @@
-let KEY_ON_OFF = 'KEY_ON_OFF'
 
 let switchOnOff = document.getElementById('switchOnOff')
 let autoState = document.getElementById('auto_state')
+
 chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
     let isOnSwitch = result['KEY_ON_OFF']
     if(isOnSwitch){
@@ -21,7 +21,6 @@ switchOnOff.onclick = function (button) {
             autoState.innerText = 'AUTO IS OFF'
             switchOnOff.src = 'https://static.wikia.nocookie.net/speed-city/images/0/0a/RedCircleIMG.png/revision/latest?cb=20190304214532'
         }else{
-            // switchOnOff.src = 'https://t4.rbxcdn.com/e3dbb8df601fa72eb4107858afb2af35'
             alert('ERROR CHOOSE AUTO OPTIONS TO START')
         }  
     })
@@ -38,10 +37,10 @@ show_coupons.onclick = function (button) {
     chrome.tabs.create({ url: newURL });
 }
 
-let auto_enroll1 = document.getElementById('auto_enroll1')
-auto_enroll1.onclick = function (button) {
-    chrome.runtime.sendMessage({message:'auto_click', page:1});
-}
+    let auto_enroll1 = document.getElementById('auto_enroll1')
+    auto_enroll1.onclick = function (button) {
+        chrome.runtime.sendMessage({message:'auto_click', page:1});
+    }
 
 let auto_enroll2 = document.getElementById('auto_enroll2')
 auto_enroll2.onclick = function (button) {

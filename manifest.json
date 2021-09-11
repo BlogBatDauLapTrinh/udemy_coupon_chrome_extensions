@@ -15,27 +15,15 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "*://*/*"
-      ],
-      "include_globs": [
-        "*://*.udemy.*/*"
-      ],
+      "matches": ["*://*/*"],
+      "include_globs": ["*://*.udemy.*/*"],
       "all_frames": true,
-      "js": [
-        "content.js"
-      ],
+      "js": ["content.js"],
       "run_at": "document_end"
     }
   ],
-  "web_accessible_resources": [
-    "*.jpg",
-    "*.JPG"
-  ],
   "background": {
-    "scripts": [
-      "background.js"
-    ],
+    "scripts": ["background.js"],
     "persistent": false
   },
   "permissions": [

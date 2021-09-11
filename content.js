@@ -1,5 +1,4 @@
-let KEY = 'STORAGE'
-let KEY_ON_OFF = 'KEY_ON_OFF'
+
 chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
     let isOnSwitch = result['KEY_ON_OFF']
     if (isOnSwitch) {
@@ -18,35 +17,29 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
 })
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    // alert('In content message is ' + request.message + ' and location.href ' + location.href) 
     if (request.message == 'enroll') {
         setTimeout(function () {
-            enrollCourse();
+            clickEnrollButton();
         }, 3000)
     }
 })
 
 function sendMessage(msg) {
-    chrome.runtime.sendMessage({ message: msg }, function (response) {
-        // alert('send message from content (message : ' + msg + ') + ( respone : ' + response +' )')
-    });
+    chrome.runtime.sendMessage({ message: msg }, function (response) {});
 }
 
-function enrollCourse() {
-    var inputs = document.getElementsByTagName('button');
-
-    for (var i = 0; i < inputs.length; i++) {
-        // alert(inputs[i].textContent)
-        if (inputs[i]["type"] == 'submit' && inputs[i].textContent == 'Enroll now') {
-            inputs[i].click()
+    function clickEnrollButton() {
+        var inputs = document.getElementsByTagName('button');
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i]["type"] == 'submit' && inputs[i].textContent == 'Enroll now') {
+                inputs[i].click()
+            }
         }
     }
-}
 
 function isExpired() {
     var inputs = document.getElementsByTagName('button');
     for (var i = 0; i < inputs.length; i++) {
-        // alert(inputs[i].textContent)
         if (inputs[i]["type"] == 'submit' && inputs[i].textContent == 'Complete Payment') {
             return true
         }
