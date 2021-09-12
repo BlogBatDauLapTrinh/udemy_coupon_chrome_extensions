@@ -10,29 +10,51 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,300&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id ="container1" class="container">
+    <div class="colum">
+        <div id ="container" class="container">
         
+        </div>
+    
+        <div class="pagenumbers" id="pagination"></div>
+
     </div>
+    
     <script >
-let container_div = document.getElementById('container1');
-let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=99&page=2&inkw=&language='
+const container_div = document.getElementById('container');
+const pagination_div = document.getElementById('pagination');
+
 
 today = new Date().getTime()
-fetch(apiUrl
+
+let current_page = 1;
+
+
+DisplayList(current_page)
+
+function DisplayList (page) {
+
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&discount=100&length=12&page='+ page +'&inkw=&language='
+	
+    fetch(apiUrl
 ).then((response)=>{
       return response.json();
   })
   .then((json) => {
-      let courses = json["results"]
-      for(let course of courses){
-        
-           //tạo thẻ Ngày còn lại
-            endTime =Date.parse(course['EndTime'])
+    let courses = json["results"]
+    let pages = json["pages"]
+    container_div.innerHTML = ''
+    pagination_div.innerHTML = ''
+	for (let course of courses) {
+	
+     
+
+          //tạo thẻ Ngày còn lại
+          endTime =Date.parse(course['EndTime'])
             timeLeft = new Date(endTime-today)
              
             let remaining = document.createElement('div')
             remaining.classList.add('remaining_div')
-            dayLeft = timeLeft.getDate()-1
+            dayLeft = timeLeft.getDate() != 0 ? timeLeft.getDate()-1: timeLeft.getDate()
             remaining.textContent = dayLeft != 0 ? dayLeft === 1 ? dayLeft + ' day left' : dayLeft+ " days left" : timeLeft.getHours() === 1 ? timeLeft.getHours() + " hour left":  timeLeft.getHours() + " hour lefts"
             
             //tạo thẻ tác giả
@@ -40,7 +62,7 @@ fetch(apiUrl
             author.classList.add('author_div')
             auContent=course['Author']
             if (auContent != null) 
-            author.textContent= auContent.length>40 ? auContent.substring(0,37)+"..." : auContent
+            author.textContent= auContent
 
             //tạo thẻ category
             let category = document.createElement('div')
@@ -91,10 +113,40 @@ fetch(apiUrl
             content_div.appendChild(review)
             link.appendChild(box)
             container_div.appendChild(link);
-      }
-      chrome.storage.sync.set({courses:courses });
+
+		
+	}
+
+    // set up pagination
+	for (let i = 1; i < pages + 1; i++) {
+		let btn = PaginationButton(i);
+		pagination_div.appendChild(btn);
+	}
+      
   })
   .catch(err=>{console.log(err)});
+
+	
+}
+function PaginationButton (page) {
+	let button = document.createElement('button');
+	button.innerText = page;
+
+	if (current_page == page) button.classList.add('active');
+
+	button.addEventListener('click', function () {
+		current_page = page;
+		DisplayList(current_page);
+
+		let current_btn = document.getElementsByClassName('.pagenumbers button.active');
+		current_btn.classList.remove('active');
+
+		button.classList.add('active');
+	});
+
+	return button;
+}
+
 </script>
 </body>
 </html>
