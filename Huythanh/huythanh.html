@@ -121,7 +121,10 @@ function DisplayList (page) {
     // set up pagination
 	for (let i = 1; i < pages + 1; i++) {
 		let btn = PaginationButton(i);
-		pagination_div.appendChild(btn);
+        let a = document.createElement('a')
+        a.setAttribute('href', "#container")
+        a.appendChild(btn)
+		pagination_div.appendChild(a);
 	}
       
   })
