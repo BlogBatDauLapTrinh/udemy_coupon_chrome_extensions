@@ -55,7 +55,7 @@ function DisplayList (page) {
             let remaining = document.createElement('div')
             remaining.classList.add('remaining_div')
             dayLeft = timeLeft.getDate() != 0 ? timeLeft.getDate()-1: timeLeft.getDate()
-            remaining.textContent = dayLeft != 0 ? dayLeft === 1 ? dayLeft + ' day left' : dayLeft+ " days left" : timeLeft.getHours() === 1 ? timeLeft.getHours() + " hour left":  timeLeft.getHours() + " hour lefts"
+            remaining.textContent = dayLeft != 0 ? dayLeft === 1 ? dayLeft + ' day left' : dayLeft+ " days left" : timeLeft.getHours() === 1 ? timeLeft.getHours() + " hour left":  timeLeft.getHours() + " hours left"
             
             //tạo thẻ tác giả
             let author = document.createElement('p');
@@ -98,6 +98,7 @@ function DisplayList (page) {
             //tao thẻ link
             let link= document.createElement('a')
             link.setAttribute('href', course['CouponLink'])
+            link.setAttribute("target", "_blank")
 
 
             //Thêm các thành phần vào card
