@@ -7,34 +7,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
         let page = request.page
         fetchAPIAtPageNth(page)
-        setTimeout(openNewTab, 1000);
         sendMessage('enroll')
+        setTimeout(openNewTab, 500);
         setIndexToZero()
         setTimeout(openEnrollCoursePage, 1500)
         setOnSwitch()
 
     } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases') {
-        removeSuccesfullyEnrollCourse()
         setIndexToNext()
-        setTimeout(openEnrollCoursePage, 500)
         sendMessage('enroll')
+        setTimeout(openEnrollCoursePage, 500)
     }
 })
 
-function removeSuccesfullyEnrollCourse() {
-    // setIndexToNext()
-    chrome.storage.sync.get(['KEY_STORAGE'], function (result) {
-        courses = result['KEY_STORAGE']
-        courses = courses.slice(1)
-        chrome.storage.sync.set({ 'KEY_STORAGE': courses }, function () {
-            console.log('update data after enroll suceessfully ' + courses.length);
-        });
-    })
-    
-}
-
-function setOnSwitch(){
-    chrome.storage.sync.set({ 'KEY_ON_OFF': true }, function () {});
+function setOnSwitch() {
+    chrome.storage.sync.set({ 'KEY_ON_OFF': true }, function () { });
 }
 
 function openNewTab() {
@@ -42,22 +29,22 @@ function openNewTab() {
     chrome.tabs.create({ url: newURL });
 }
 
-function setIndexToZero(){
+function setIndexToZero() {
     chrome.storage.sync.set({ 'KEY_INDEX': 0 }, function () {
         console.log('set index to zero')
     });
 }
 
-function setIndexToNext(){
-    getCurrentIndex(function(index){
-        var nextIndex =  Number(index) + 1    
+function setIndexToNext() {
+    getCurrentIndex(function (index) {
+        var nextIndex = Number(index) + 1
         chrome.storage.sync.set({ 'KEY_INDEX': nextIndex }, function () {
             console.log('set index to ' + nextIndex)
         });
     })
 }
 
-function getCurrentIndex(callback){
+function getCurrentIndex(callback) {
     chrome.storage.sync.get(['KEY_INDEX'], function (json) {
         let currentIndex = json['KEY_INDEX']
         callback(currentIndex)
@@ -73,12 +60,15 @@ function openWelcomePage() {
 function openEnrollCoursePage() {
     chrome.storage.sync.get(['KEY_STORAGE'], function (json) {
         let arrayCourses = json['KEY_STORAGE']
-        if (arrayCourses.length > 0) {
-            let urlEnroll = arrayCourses[0]
-            chrome.tabs.update({
-                url: urlEnroll
-            });
-        } 
+        getCurrentIndex(function (index) {
+            if (index < arrayCourses.length) {
+                let urlEnroll = arrayCourses[index]
+                chrome.tabs.update({
+                    url: urlEnroll
+                });
+            }
+
+        })
     });
 }
 
@@ -91,8 +81,8 @@ function sendMessage(msg) {
     });
 }
 function fetchAPIAtPageNth(page_nth) {
-
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=70&page=' + page_nth + '&inkw=&discount=100&language='
+    page_nth = 2
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=' + page_nth + '&inkw=&discount=100&language='
 
     fetch(apiUrl
     ).then((response) => {
@@ -105,9 +95,9 @@ function fetchAPIAtPageNth(page_nth) {
         }).catch(err => { console.log('encounter error ' + err) });
 }
 
-function jsonToArrayCourses(courses){
+function jsonToArrayCourses(courses) {
     let simpleJson = []
-    for (const course of courses){
+    for (const course of courses) {
         simpleJson.push(getURLEnroll(course))
     }
     return simpleJson
