@@ -2,6 +2,7 @@
 let switchOnOff = document.getElementById('switchOnOff')
 let autoState = document.getElementById('auto_state')
 let numberAvailable = document.getElementById('numberOfAvailableCoupons')
+let currentEnrolled = document.getElementById('currentEnrolled')
 
 chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
     let isOnSwitch = result['KEY_ON_OFF']
@@ -13,6 +14,7 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         autoState.innerText = 'AUTO IS OFF'
     }
 })
+
 switchOnOff.onclick = function (button) {
     chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         let isOnSwitch = result['KEY_ON_OFF']
@@ -36,12 +38,31 @@ switchOnOff.onclick = function (button) {
     })
 }
 
-
 showNumberOfAvailableCouponToday()
+showStatusEnrollCourse()
+
+function showStatusEnrollCourse(){
+    chrome.storage.sync.get(['KEY_STORAGE'], function (result) {
+        let arrayCourses = result['KEY_STORAGE']
+        getCurrentIndex(function (index) {
+            if (index != undefined && arrayCourses != undefined){
+                currentEnrolled.innerText = "Has enrolled " + index + "/" + arrayCourses.length
+            }
+            else{
+                currentEnrolled.innerText = "Choose an opntion to start"
+            }
+        })
+
+    })
+    
+}
 
 function autoHasBeenStoped(callback) {
     chrome.storage.sync.get(['KEY_STORAGE'], function (json) {
         let arrayCourses = json['KEY_STORAGE']
+        if(arrayCourses==undefined){
+            alert('Choose an option to start')
+        }
         getCurrentIndex(function (index) {
             if (index > arrayCourses.length) {
                 callback(true)
@@ -55,12 +76,10 @@ function autoHasBeenStoped(callback) {
 function showNumberOfAvailableCouponToday() {
     chrome.storage.sync.get(['KEY_AVAILABLE_COUPON'], function (result) {
         let numberOfAvailableCoupons = result['KEY_AVAILABLE_COUPON']
-        if (!numberOfAvailableCoupons) {
-            fetchNumberOfAvailableCouponToday()
-            showNumberOfAvailableCouponToday()
-        } else {
-            numberAvailable.innerText = 'THERE ARE ' + numberOfAvailableCoupons + ' TODAY '
-        }
+        fetchNumberOfAvailableCouponToday()
+        numberAvailable.innerText = 'THERE ARE ' + numberOfAvailableCoupons + ' TODAY '
+        
+
     })
 }
 
@@ -75,10 +94,8 @@ function fetchNumberOfAvailableCouponToday() {
         .then((json) => {
             let numberOfAvailableCourse = json['recordsFiltered']
             chrome.storage.sync.set({ 'KEY_AVAILABLE_COUPON': numberOfAvailableCourse }, function () {
-                alert('set number available ok')
             });
         }).catch(err => { console.log('encounter error ' + err) });
-
 }
 
 function setOffSwitch() {
