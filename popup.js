@@ -128,7 +128,7 @@ auto_enroll1.onclick = function (button) {
 
 let auto_enroll2 = document.getElementById('auto_enroll2')
 auto_enroll2.onclick = function (button) {
-    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 50 });
+    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 10 });
 }
 
 let options = document.getElementById('options')
