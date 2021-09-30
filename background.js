@@ -45,7 +45,7 @@ function setIndexToNext() {
     })
 }
 
-function getNumberOfAvailableCoupon(callback){
+function getNumberOfAvailableCoupon(callback) {
     chrome.storage.sync.get(['KEY_AVAILABLE_COUPON'], function (json) {
         let numberOfAvailableCoupons = json['KEY_AVAILABLE_COUPON']
         callback(numberOfAvailableCoupons)
@@ -78,22 +78,24 @@ function openWelcomePage() {
 }
 
 function openEnrollCoursePage() {
-    chrome.storage.sync.get(['KEY_STORAGE'], function (json) {
-        let arrayCourses = json['KEY_STORAGE']
-        getCurrentIndex(function (index) {
+    getNumberOfEnroll(function (numberOfEnroll) {
+        if (numberOfEnroll == 1)
 
-            getNumberOfEnroll(function(numberOfEnroll){
+        chrome.storage.sync.get(['KEY_STORAGE1'], function (json) {
+            let arrayCourses = json['KEY_STORAGE1']
+            getCurrentIndex(function (index) {
 
-            if (index < numberOfEnroll) {
-                let urlEnroll = arrayCourses[index]
-                chrome.tabs.update({
-                    url: urlEnroll
-                });
-            }
-            else{
-                setOffSwitch()
-            }
+                if (index < numberOfEnroll) {
+                    let urlEnroll = arrayCourses[index]
+                    chrome.tabs.update({
+                        url: urlEnroll
+                    });
+                }
+                else {
+                    setOffSwitch()
+                }
             })
+
         })
     });
 }
@@ -108,20 +110,30 @@ function sendMessage(msg) {
 }
 function fetchAPI(numberOfCourse) {
     console.log('start fetch api')
-    var page = 1;
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length='+ numberOfCourse +'&page='+ page +'&inkw=&discount=100&language='
+    var numberOfSet = Math.ceil(numberOfCourse / 70)
+    for (let i = 0; i < numberOfSet; i++) {
+        storeAPIOfAllCourses(numberOfCourse,i)
+    }
+}
 
+function storeAPIOfAllCourses(numberOfCourse,page_nth) {
+    page_nth += 1
+    var length = (numberOfCourse > 70*page_nth)?70:numberOfCourse-70*(page_nth-1)
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length='+length+'&page=' + page_nth + '&inkw=&discount=100&language='
+    console.log('api is ' + apiUrl)
     fetch(apiUrl
-    ).then((response) => {
+    )
+    .then((response) => {
         return response.json();
     })
         .then((json) => {
             let courses = getCourse(json)
             let arrayCourses = jsonToArrayCourses(courses)
-            chrome.storage.sync.set({ "KEY_STORAGE": arrayCourses }, function () {
+            let keyStore = "KEYSTORAGE" + page_nth
+            chrome.storage.sync.set({ [keyStore]: arrayCourses }, function () {
                 console.log('fetch API successfully')
                 console.log(arrayCourses)
-             });
+            });
         }).catch(err => { console.log('encounter error ' + err) });
 }
 
@@ -139,8 +151,8 @@ function getURLEnroll(course) {
     return "https://www.udemy.com/cart/checkout/express/course/" + idCourse + "/?discountCode=" + codeCoupon
 }
 
-function setOffSwitch(){
-    chrome.storage.sync.set({ 'KEY_ON_OFF': false }, function () {});
+function setOffSwitch() {
+    chrome.storage.sync.set({ 'KEY_ON_OFF': false }, function () { });
 }
 
 function getCourse(json) {
