@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         setTimeout(openEnrollCoursePage, 1500)
         setOnSwitch()
 
-    } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases') {
+    } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases' || request.message == 'continue') {
         setIndexToNext()
         sendMessage('enroll')
         setTimeout(openEnrollCoursePage, 500)
@@ -67,6 +67,9 @@ function openEnrollCoursePage() {
                     url: urlEnroll
                 });
             }
+            else{
+                setOffSwitch()
+            }
 
         })
     });
@@ -81,7 +84,7 @@ function sendMessage(msg) {
     });
 }
 function fetchAPIAtPageNth(page_nth) {
-    page_nth = 2
+
     let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=' + page_nth + '&inkw=&discount=100&language='
 
     fetch(apiUrl
@@ -91,7 +94,9 @@ function fetchAPIAtPageNth(page_nth) {
         .then((json) => {
             let courses = getCourse(json)
             let arrayCourses = jsonToArrayCourses(courses)
-            chrome.storage.sync.set({ "KEY_STORAGE": arrayCourses }, function () { });
+            chrome.storage.sync.set({ "KEY_STORAGE": arrayCourses }, function () {
+                console.log('fetch API successfully')
+             });
         }).catch(err => { console.log('encounter error ' + err) });
 }
 
@@ -107,6 +112,10 @@ function getURLEnroll(course) {
     let idCourse = course['ImageUrl'].split('/')[5].split('_')[0]
     let codeCoupon = course['CouponCode']
     return "https://www.udemy.com/cart/checkout/express/course/" + idCourse + "/?discountCode=" + codeCoupon
+}
+
+function setOffSwitch(){
+    chrome.storage.sync.set({ 'KEY_ON_OFF': false }, function () {});
 }
 
 function getCourse(json) {
