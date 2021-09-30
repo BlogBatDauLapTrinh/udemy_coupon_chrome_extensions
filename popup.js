@@ -43,11 +43,11 @@ showStatusEnrollCourse()
 
 
 function showStatusEnrollCourse(){
-    chrome.storage.sync.get(['KEY_STORAGE'], function (result) {
-        let arrayCourses = result['KEY_STORAGE']
+    chrome.storage.sync.get(['KEY_NUMBER_ENROLL'], function (result) {
+        let numberOfEnroll = result['KEY_NUMBER_ENROLL']
         getCurrentIndex(function (index) {
-            if (index != undefined && arrayCourses != undefined){
-                currentEnrolled.innerText = "Has enrolled " + index + "/" + arrayCourses.length
+            if (index != undefined){
+                currentEnrolled.innerText = "Has enrolled " + index + "/" + numberOfEnroll
             }
             else{
                 currentEnrolled.innerText = "Choose an opntion to start"
@@ -59,13 +59,13 @@ function showStatusEnrollCourse(){
 }
 
 function autoHasBeenStoped(callback) {
-    chrome.storage.sync.get(['KEY_STORAGE'], function (json) {
-        let arrayCourses = json['KEY_STORAGE']
-        if(arrayCourses==undefined){
+    chrome.storage.sync.get(['KEY_NUMBER_ENROLL'], function (json) {
+        let numberOfEnrollCourse = json['KEY_NUMBER_ENROLL']
+        if(numberOfEnrollCourse==undefined){
             alert('Choose an option to start')
         }
         getCurrentIndex(function (index) {
-            if (index > arrayCourses.length) {
+            if (index >= Number(numberOfEnrollCourse)) {
                 callback(true)
             } else {
                 callback(false)

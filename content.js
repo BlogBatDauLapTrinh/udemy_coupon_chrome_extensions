@@ -7,7 +7,7 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
                 sendMessage('complete_a_course');
             }, 2000)
         }
-        else if (isPurchased() || isExpired()) {
+        else if (isPurchased() || isExpired() || isFailed()) {
             setTimeout(function () {
                 sendMessage('can_not_purchases');
             }, 2000)
@@ -41,6 +41,15 @@ function isExpired() {
     var inputs = document.getElementsByTagName('button');
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i]["type"] == 'submit' && inputs[i].textContent == 'Complete Payment') {
+            return true
+        }
+    }
+}
+
+function isFailed(){
+    var inputs = document.getElementsByTagName('div')
+    for (var i=0;i < inputs.length;i++){
+        if (inputs[i]['class'] == 'checkout--right-col--1y9nm'){
             return true
         }
     }

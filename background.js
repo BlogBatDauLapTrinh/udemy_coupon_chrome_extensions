@@ -79,24 +79,29 @@ function openWelcomePage() {
 
 function openEnrollCoursePage() {
     getNumberOfEnroll(function (numberOfEnroll) {
-        if (numberOfEnroll == 1)
+        console.log('open enroll course page')
 
-        chrome.storage.sync.get(['KEY_STORAGE1'], function (json) {
-            let arrayCourses = json['KEY_STORAGE1']
-            getCurrentIndex(function (index) {
-
+        getCurrentIndex(function (index) {
+            var currentPage = Math.ceil((index+1) / 6)
+            var keyStrogae = 'KEY_STORAGE' + currentPage
+            console.log('key storage is ' + keyStrogae + ' and number of enroll is ' + numberOfEnroll)
+            chrome.storage.sync.get([keyStrogae], function (json) {
+                let arrayCourses = json[keyStrogae]
                 if (index < numberOfEnroll) {
-                    let urlEnroll = arrayCourses[index]
+                    let urlEnroll = arrayCourses[index%6]
                     chrome.tabs.update({
                         url: urlEnroll
                     });
                 }
                 else {
+                    console.log('set off switch')
                     setOffSwitch()
                 }
+    
             })
-
+            
         })
+
     });
 }
 
@@ -110,15 +115,19 @@ function sendMessage(msg) {
 }
 function fetchAPI(numberOfCourse) {
     console.log('start fetch api')
-    var numberOfSet = Math.ceil(numberOfCourse / 70)
+    var numberOfSet = Math.ceil(numberOfCourse / 6)
     for (let i = 0; i < numberOfSet; i++) {
         storeAPIOfAllCourses(numberOfCourse,i)
     }
+    chrome.storage.sync.get(null, function(items) {
+        var allKeys = Object.keys(items);
+        console.log(allKeys);
+    });
 }
 
 function storeAPIOfAllCourses(numberOfCourse,page_nth) {
     page_nth += 1
-    var length = (numberOfCourse > 70*page_nth)?70:numberOfCourse-70*(page_nth-1)
+    var length = (numberOfCourse > 6*page_nth)?6:numberOfCourse-6*(page_nth-1)
     let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length='+length+'&page=' + page_nth + '&inkw=&discount=100&language='
     console.log('api is ' + apiUrl)
     fetch(apiUrl
@@ -129,10 +138,9 @@ function storeAPIOfAllCourses(numberOfCourse,page_nth) {
         .then((json) => {
             let courses = getCourse(json)
             let arrayCourses = jsonToArrayCourses(courses)
-            let keyStore = "KEYSTORAGE" + page_nth
+            let keyStore = "KEY_STORAGE" + page_nth
             chrome.storage.sync.set({ [keyStore]: arrayCourses }, function () {
                 console.log('fetch API successfully')
-                console.log(arrayCourses)
             });
         }).catch(err => { console.log('encounter error ' + err) });
 }
