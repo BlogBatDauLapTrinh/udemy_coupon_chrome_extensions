@@ -41,6 +41,7 @@ switchOnOff.onclick = function (button) {
 showNumberOfAvailableCouponToday()
 showStatusEnrollCourse()
 
+
 function showStatusEnrollCourse(){
     chrome.storage.sync.get(['KEY_STORAGE'], function (result) {
         let arrayCourses = result['KEY_STORAGE']
@@ -122,12 +123,12 @@ show_coupons.onclick = function (button) {
 
 let auto_enroll1 = document.getElementById('auto_enroll1')
 auto_enroll1.onclick = function (button) {
-    chrome.runtime.sendMessage({ message: 'auto_click', page: 1 });
+    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 100 });
 }
 
 let auto_enroll2 = document.getElementById('auto_enroll2')
 auto_enroll2.onclick = function (button) {
-    chrome.runtime.sendMessage({ message: 'auto_click', page: 2 });
+    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 50 });
 }
 
 let options = document.getElementById('options')

@@ -5,8 +5,9 @@ chrome.runtime.onInstalled.addListener(function () {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'auto_click') {
-        let page = request.page
-        fetchAPIAtPageNth(page)
+        let numberOfCourse = request.numberOfCourse
+        setnumberOfEnrollCourse(numberOfCourse)
+        fetchAPI(numberOfCourse)
         sendMessage('enroll')
         setTimeout(openNewTab, 500);
         setIndexToZero()
@@ -44,10 +45,29 @@ function setIndexToNext() {
     })
 }
 
+function getNumberOfAvailableCoupon(callback){
+    chrome.storage.sync.get(['KEY_AVAILABLE_COUPON'], function (json) {
+        let numberOfAvailableCoupons = json['KEY_AVAILABLE_COUPON']
+        callback(numberOfAvailableCoupons)
+    })
+}
+
+
 function getCurrentIndex(callback) {
     chrome.storage.sync.get(['KEY_INDEX'], function (json) {
         let currentIndex = json['KEY_INDEX']
         callback(currentIndex)
+    })
+}
+
+function setnumberOfEnrollCourse(numberOfEnrollCourse) {
+    chrome.storage.sync.set({ 'KEY_NUMBER_ENROLL': numberOfEnrollCourse }, function () { });
+}
+
+function getNumberOfEnroll(callback) {
+    chrome.storage.sync.get(['KEY_NUMBER_ENROLL'], function (json) {
+        let numberOfEnroll = json['KEY_NUMBER_ENROLL']
+        callback(numberOfEnroll)
     })
 }
 
@@ -61,7 +81,10 @@ function openEnrollCoursePage() {
     chrome.storage.sync.get(['KEY_STORAGE'], function (json) {
         let arrayCourses = json['KEY_STORAGE']
         getCurrentIndex(function (index) {
-            if (index < arrayCourses.length) {
+
+            getNumberOfEnroll(function(numberOfEnroll){
+
+            if (index < numberOfEnroll) {
                 let urlEnroll = arrayCourses[index]
                 chrome.tabs.update({
                     url: urlEnroll
@@ -70,7 +93,7 @@ function openEnrollCoursePage() {
             else{
                 setOffSwitch()
             }
-
+            })
         })
     });
 }
@@ -83,9 +106,10 @@ function sendMessage(msg) {
         });
     });
 }
-function fetchAPIAtPageNth(page_nth) {
-
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=5&page=' + page_nth + '&inkw=&discount=100&language='
+function fetchAPI(numberOfCourse) {
+    console.log('start fetch api')
+    var page = 1;
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length='+ numberOfCourse +'&page='+ page +'&inkw=&discount=100&language='
 
     fetch(apiUrl
     ).then((response) => {
@@ -96,6 +120,7 @@ function fetchAPIAtPageNth(page_nth) {
             let arrayCourses = jsonToArrayCourses(courses)
             chrome.storage.sync.set({ "KEY_STORAGE": arrayCourses }, function () {
                 console.log('fetch API successfully')
+                console.log(arrayCourses)
              });
         }).catch(err => { console.log('encounter error ' + err) });
 }
