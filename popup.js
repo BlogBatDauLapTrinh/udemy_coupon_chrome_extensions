@@ -1,6 +1,7 @@
 
 let switchOnOff = document.getElementById('switchOnOff')
 let autoState = document.getElementById('auto_state')
+let numberAvailable = document.getElementById('numberOfAvailableCoupons')
 
 chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
     let isOnSwitch = result['KEY_ON_OFF']
@@ -12,7 +13,6 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         autoState.innerText = 'AUTO IS OFF'
     }  
 })
-
 switchOnOff.onclick = function (button) {
     chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         let isOnSwitch = result['KEY_ON_OFF']
@@ -27,6 +27,37 @@ switchOnOff.onclick = function (button) {
             chrome.runtime.sendMessage({message:'continue', page:2});
         }  
     })
+}
+
+showNumberOfAvailableCouponToday()
+
+function showNumberOfAvailableCouponToday(){
+    chrome.storage.sync.get(['KEY_AVAILABLE_COUPON'], function (result) {
+        let numberOfAvailableCoupons = result['KEY_AVAILABLE_COUPON']
+        if(!numberOfAvailableCoupons){
+            fetchNumberOfAvailableCouponToday()
+            showNumberOfAvailableCouponToday()
+        }else{
+            numberAvailable.innerText = 'THERE ARE ' + numberOfAvailableCoupons + ' TODAY '
+        }
+    })
+}
+
+function fetchNumberOfAvailableCouponToday(){
+
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=1&page=1&inkw=&discount=100&language='
+
+    fetch(apiUrl
+    ).then((response) => {
+        return response.json();
+    })
+    .then((json) => {
+        let numberOfAvailableCourse = json['recordsFiltered']
+        chrome.storage.sync.set({ 'KEY_AVAILABLE_COUPON': numberOfAvailableCourse }, function () {
+            alert('set number available ok')
+        });
+    }).catch(err => { console.log('encounter error ' + err) });
+
 }
 
 function setOffSwitch(){
