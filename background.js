@@ -9,17 +9,20 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         fetchAPIAtPageNth(page)
         setTimeout(openNewTab, 1000);
         sendMessage('enroll')
+        setIndexToZero()
         setTimeout(openEnrollCoursePage, 1500)
         setOnSwitch()
 
     } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases') {
         removeSuccesfullyEnrollCourse()
+        setIndexToNext()
         setTimeout(openEnrollCoursePage, 500)
         sendMessage('enroll')
     }
 })
 
 function removeSuccesfullyEnrollCourse() {
+    // setIndexToNext()
     chrome.storage.sync.get(['KEY_STORAGE'], function (result) {
         courses = result['KEY_STORAGE']
         courses = courses.slice(1)
@@ -27,6 +30,7 @@ function removeSuccesfullyEnrollCourse() {
             console.log('update data after enroll suceessfully ' + courses.length);
         });
     })
+    
 }
 
 function setOnSwitch(){
@@ -36,6 +40,28 @@ function setOnSwitch(){
 function openNewTab() {
     var newURL = "chrome://newtab";
     chrome.tabs.create({ url: newURL });
+}
+
+function setIndexToZero(){
+    chrome.storage.sync.set({ 'KEY_INDEX': 0 }, function () {
+        console.log('set index to zero')
+    });
+}
+
+function setIndexToNext(){
+    getCurrentIndex(function(index){
+        var nextIndex =  Number(index) + 1    
+        chrome.storage.sync.set({ 'KEY_INDEX': nextIndex }, function () {
+            console.log('set index to ' + nextIndex)
+        });
+    })
+}
+
+function getCurrentIndex(callback){
+    chrome.storage.sync.get(['KEY_INDEX'], function (json) {
+        let currentIndex = json['KEY_INDEX']
+        callback(currentIndex)
+    })
 }
 
 
@@ -75,7 +101,7 @@ function fetchAPIAtPageNth(page_nth) {
         .then((json) => {
             let courses = getCourse(json)
             let arrayCourses = jsonToArrayCourses(courses)
-            chrome.storage.sync.set({ KEY_STORAGE: arrayCourses }, function () { });
+            chrome.storage.sync.set({ "KEY_STORAGE": arrayCourses }, function () { });
         }).catch(err => { console.log('encounter error ' + err) });
 }
 
