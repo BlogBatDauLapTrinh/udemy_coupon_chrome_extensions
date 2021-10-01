@@ -9,9 +9,12 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
     if (isOnSwitch) {
         switchOnOff.src = '/images/green.png'
         autoState.innerText = 'AUTO IS ON'
-    } else {
+    } else if(isOnSwitch == undefined){
         switchOnOff.src = '/images/red.png'
-        autoState.innerText = 'AUTO IS OFF'
+        autoState.innerText = 'AUTO IS STOP'
+    }else{
+        switchOnOff.src = '/images/red.png'
+        autoState.innerText = 'AUTO IS PAUSE'
     }
 })
 
@@ -30,7 +33,7 @@ switchOnOff.onclick = function (button) {
                 if (isStop) {
                     alert('Auto has been stop')
                     return
-                } else {
+                } else if(isStop == false) {
                     setOnSwitch()
                     autoState.innerText = 'AUTO IS ON'
                     switchOnOff.src = '/images/green.png'

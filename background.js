@@ -21,6 +21,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 })
 
+function setNullSwitch(){
+    chrome.storage.sync.set({ 'KEY_ON_OFF': undefined }, function () { });
+}
+
 function setOnSwitch() {
     chrome.storage.sync.set({ 'KEY_ON_OFF': true }, function () { });
 }
@@ -94,8 +98,8 @@ function openEnrollCoursePage() {
                     });
                 }
                 else {
-                    console.log('set off switch')
-                    setOffSwitch()
+                    console.log('set null switch')
+                    setNullSwitch()                    
                 }
     
             })
@@ -103,6 +107,10 @@ function openEnrollCoursePage() {
         })
 
     });
+}
+
+function setNullSwitch(){
+    chrome.storage.sync.set({ 'KEY_ON_OFF': undefined }, function () { });
 }
 
 function sendMessage(msg) {
