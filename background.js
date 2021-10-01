@@ -98,7 +98,8 @@ function openEnrollCoursePage() {
                 }
                 else {
                     console.log('set null switch')
-                    setNullSwitch()                    
+                    setNullSwitch()
+                    sendMessageToPopup('update_ui')                    
                 }
     
             })

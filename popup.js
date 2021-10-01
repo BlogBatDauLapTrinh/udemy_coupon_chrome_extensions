@@ -19,7 +19,7 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
 })
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if(request.message == 'can_not_purchases' || request.message == 'complete_a_course'){
+    if(request.message == 'update_ui'){
         updateUI()
         // alert('update_ui')
         let autoState = document.getElementById('auto_state')
@@ -37,6 +37,8 @@ switchOnOff.onclick = function (button) {
     chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         let isOnSwitch = result['KEY_ON_OFF']
         if (isOnSwitch) {
+
+
             setOffSwitch()
             autoState.innerText = 'AUTO IS PAUSED'
             switchOnOff.src = '/images/red.png'
@@ -53,6 +55,15 @@ switchOnOff.onclick = function (button) {
                 }
             })
         }
+    })
+}
+
+function setIndexToPrevious() {
+    getCurrentIndex(function (index) {
+        var nextIndex = Number(index) - 1
+        chrome.storage.sync.set({ 'KEY_INDEX': nextIndex }, function () {
+            console.log('set index to ' + nextIndex)
+        });
     })
 }
 
