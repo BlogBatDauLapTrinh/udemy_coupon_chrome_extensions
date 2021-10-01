@@ -9,10 +9,10 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
     if (isOnSwitch) {
         switchOnOff.src = '/images/green.png'
         autoState.innerText = 'AUTO IS ON'
-    } else if(isOnSwitch == undefined){
+    }else if(isOnSwitch == null){
         switchOnOff.src = '/images/red.png'
         autoState.innerText = 'AUTO IS STOP'
-    }else{
+    }else if(isOnSwitch == false){
         switchOnOff.src = '/images/red.png'
         autoState.innerText = 'AUTO IS PAUSE'
     }
@@ -130,7 +130,7 @@ auto_enroll1.onclick = function (button) {
 
 let auto_enroll2 = document.getElementById('auto_enroll2')
 auto_enroll2.onclick = function (button) {
-    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 10 });
+    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 3 });
 }
 
 let options = document.getElementById('options')

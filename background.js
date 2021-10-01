@@ -4,6 +4,7 @@ chrome.runtime.onInstalled.addListener(function () {
 });
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    console.log('message is ' + request.message)
     if (request.message == 'auto_click') {
         let numberOfCourse = request.numberOfCourse
         setnumberOfEnrollCourse(numberOfCourse)
@@ -20,10 +21,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         setTimeout(openEnrollCoursePage, 500)
     }
 })
-
-function setNullSwitch(){
-    chrome.storage.sync.set({ 'KEY_ON_OFF': undefined }, function () { });
-}
 
 function setOnSwitch() {
     chrome.storage.sync.set({ 'KEY_ON_OFF': true }, function () { });
@@ -110,7 +107,7 @@ function openEnrollCoursePage() {
 }
 
 function setNullSwitch(){
-    chrome.storage.sync.set({ 'KEY_ON_OFF': undefined }, function () { });
+    chrome.storage.sync.set({ 'KEY_ON_OFF': null }, function () { });
 }
 
 function sendMessage(msg) {
