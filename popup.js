@@ -18,10 +18,22 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
     }
 })
 
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if(request.message == 'can_not_purchases' || request.message == 'complete_a_course'){
+        updateUI()
+        // alert('update_ui')
+        let autoState = document.getElementById('auto_state')
+        autoState.innerText = 'update_ui'
+    }
+    // alert('receive message ' + request.message)
+})
+
+
 showNumberOfAvailableCouponToday()
 showStatusEnrollCourse()
 
 switchOnOff.onclick = function (button) {
+    updateUI()
     chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         let isOnSwitch = result['KEY_ON_OFF']
         if (isOnSwitch) {
@@ -41,6 +53,36 @@ switchOnOff.onclick = function (button) {
                 }
             })
         }
+    })
+}
+
+function updateUI(){
+
+    chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
+        let isOnSwitch = result['KEY_ON_OFF']
+        if (isOnSwitch) {
+            switchOnOff.src = '/images/green.png'
+            autoState.innerText = 'AUTO IS ON'
+        }else if(isOnSwitch == null){
+            switchOnOff.src = '/images/red.png'
+            autoState.innerText = 'AUTO IS STOP'
+        }else if(isOnSwitch == false){
+            switchOnOff.src = '/images/red.png'
+            autoState.innerText = 'AUTO IS PAUSE'
+        }
+    })
+    
+    chrome.storage.sync.get(['KEY_NUMBER_ENROLL'], function (result) {
+        let numberOfEnroll = result['KEY_NUMBER_ENROLL']
+        getCurrentIndex(function (index) {
+            if (index != undefined){
+                currentEnrolled.innerText = "Has enrolled " + index + "/" + numberOfEnroll
+            }
+            else{
+                currentEnrolled.innerText = "Choose an opntion to start"
+            }
+        })
+
     })
 }
 

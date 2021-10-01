@@ -18,7 +18,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases' || request.message == 'continue') {
         setIndexToNext()
         sendMessage('enroll')
+        sendMessageToPopup('update_ui')
         setTimeout(openEnrollCoursePage, 500)
+        // sendMessage('update_ui')
     }
 })
 
@@ -108,6 +110,12 @@ function openEnrollCoursePage() {
 
 function setNullSwitch(){
     chrome.storage.sync.set({ 'KEY_ON_OFF': null }, function () { });
+}
+
+function sendMessageToPopup(msg){
+    chrome.runtime.sendMessage({
+        message:msg
+    })
 }
 
 function sendMessage(msg) {
