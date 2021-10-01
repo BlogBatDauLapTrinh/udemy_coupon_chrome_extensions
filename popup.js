@@ -15,6 +15,9 @@ chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
     }
 })
 
+showNumberOfAvailableCouponToday()
+showStatusEnrollCourse()
+
 switchOnOff.onclick = function (button) {
     chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         let isOnSwitch = result['KEY_ON_OFF']
@@ -37,10 +40,6 @@ switchOnOff.onclick = function (button) {
         }
     })
 }
-
-showNumberOfAvailableCouponToday()
-showStatusEnrollCourse()
-
 
 function showStatusEnrollCourse(){
     chrome.storage.sync.get(['KEY_NUMBER_ENROLL'], function (result) {
