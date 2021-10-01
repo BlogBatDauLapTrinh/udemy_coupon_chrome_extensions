@@ -1,5 +1,5 @@
 setTimeout(checkResul,2000)
-
+reClickEnroll()
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message == 'enroll') {
         setTimeout(function () {
@@ -7,6 +7,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }, 3000)
     }
 })
+
+function reClickEnroll(){
+    setTimeout(clickEnrollButton,5000)
+}
 
 function checkResul() {
     chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
@@ -38,6 +42,7 @@ function clickEnrollButton() {
             inputs[i].click()
         }
     }
+    reClickEnroll()
 }
 
 function isExpired() {
