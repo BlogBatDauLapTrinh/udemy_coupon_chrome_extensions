@@ -11,90 +11,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class= "Bar">
-        <div class = "fillter_courses">
-            <div class="dropdown">
-                <div class= "fillter">Categories</div>
-                    <div class= "categories">
-                        <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="All Categories" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>All Categories</span>
-                            </label>
-                        </div>
-                            <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>Development</span>
-                            </label>
-                        </div>
-                        <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>Business</span>
-                            </label>
-                        </div>
-                        <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>IT & Software</span>
-                            </label>
-                        </div>
-                        <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>Office Productivity</span>
-                            </label>
-                        </div>
-                        <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>Personal Development</span>
-                            </label>
-                        </div>
-                            <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>Design</span>
-                            </label>
-                        </div>
-                            <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>Marketing</span>
-                            </label>
-                        </div>
-                            <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>Lifestyle</span>
-                            </label>
-                        </div>
-                            <div class="categorie">
-                            <input type="checkbox" name="categories" class="" value="Development" id="__BVID__88_BV_option_1">
-                            <label class="custom-control-label" for="__BVID__88_BV_option_1">
-                                    <span>Photography</span>
-                            </label>
-                        </div>
 
-                                
-                    </div>
-                </div>
-               
-           
-            
-               
-                <div class= "fillter">Rating</div>
-                
-                <div class= "fillter">Level</div>
-                <div class= "fillter">Durations</div>
-        </div>
-        <div class = "searchbar">
-            <input placeholder="Search for courses" class="searchInput"></input>
-        </div>
-            <button class ="searchIcon">Search</button>
-            
-    </div>
     <div class="colum">
         <div id ="container" class="container">
         
@@ -204,13 +121,92 @@ function DisplayList (page) {
 	}
 
     // set up pagination
-	for (let i = 1; i < pages + 1; i++) {
+    if(page != 1){
+        let button_pre = document.createElement('button');
+        button_pre.innerText = "<"
+        button_pre.addEventListener('click', function () {
+		current_page = page-1;
+		DisplayList(current_page);})
+        let a_pre = document.createElement('a')
+        a_pre.setAttribute('href', "#container")
+        a_pre.appendChild(button_pre)
+		pagination_div.appendChild(a_pre);
+    }
+        
+
+
+    if(pages > 6){
+        for (let i = 1; i <  3; i++) {
+		let btn = PaginationButton(i);
+        let a = document.createElement('a')
+        a.setAttribute('href', "#container")
+        a.appendChild(btn)
+		pagination_div.appendChild(a);
+	    }
+        if(page === 3){
+            let button3 = document.createElement('button');
+	        button3.innerText = page;
+            button3.classList.add('active')
+            let a3 = document.createElement('a')
+            a3.setAttribute('href', "#container")
+            a3.appendChild(button3)
+            pagination_div.appendChild(a3);
+        }
+
+        let button = document.createElement('button');
+        button.innerText = "..."
+        pagination_div.appendChild(button)
+
+        if(page >3 && page<pages-2){
+            let button_mid = document.createElement('button');
+	        button_mid.innerText = page;
+            button_mid.classList.add('active')
+            let a_mid = document.createElement('a')
+            a_mid.setAttribute('href', "#container")
+            a_mid.appendChild(button_mid)
+            pagination_div.appendChild(a_mid);
+            let buttondot = document.createElement('button');
+            buttondot.innerText = "..."
+            pagination_div.appendChild(buttondot)
+        }
+
+        if(page === pages - 2){
+            let button3p = document.createElement('button');
+	        button3p.innerText = page;
+            button3p.classList.add('active')
+            let a3p = document.createElement('a')
+            a3p.setAttribute('href', "#container")
+            a3p.appendChild(button3p)
+            pagination_div.appendChild(a3p);
+        }
+
+        for (let i = pages-1; i<pages+1 ; i++) {
+		let btn = PaginationButton(i);
+        let a = document.createElement('a')
+        a.setAttribute('href', "#container")
+        a.appendChild(btn)
+		pagination_div.appendChild(a);
+	    }
+    }else{
+        for (let i = 1; i < pages + 1; i++) {
 		let btn = PaginationButton(i);
         let a = document.createElement('a')
         a.setAttribute('href', "#container")
         a.appendChild(btn)
 		pagination_div.appendChild(a);
 	}
+    }
+    if(page != pages){
+        let button_next = document.createElement('button');
+        button_next.innerText = ">"
+        button_next.addEventListener('click', function () {
+		current_page = page+1;
+		DisplayList(current_page);})
+        let a_next = document.createElement('a')
+        a_next.setAttribute('href', "#container")
+        a_next.appendChild(button_next)
+		pagination_div.appendChild(a_next);
+    }
       
   })
   .catch(err=>{console.log(err)});
