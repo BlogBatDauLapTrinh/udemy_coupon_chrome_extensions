@@ -152,12 +152,31 @@ function DisplayList (page) {
             a3.appendChild(button3)
             pagination_div.appendChild(a3);
         }
+         if(page === 4){
+             let button3 = document.createElement('button');
+	        button3.innerText = 3;
+            let a3 = document.createElement('a')
+            a3.setAttribute('href', "#container")
+            a3.appendChild(button3)
+            pagination_div.appendChild(a3);
 
-        let button = document.createElement('button');
-        button.innerText = "..."
-        pagination_div.appendChild(button)
+            let button4 = document.createElement('button');
+	        button4.innerText = page;
+            button4.classList.add('active')
+            let a4 = document.createElement('a')
+            a4.setAttribute('href', "#container")
+            a4.appendChild(button4)
+            pagination_div.appendChild(a4);
+        }
 
-        if(page >3 && page<pages-2){
+        if(!(pages === 7  && page === 4)){
+            let button = document.createElement('button');
+            button.innerText = "..."
+            pagination_div.appendChild(button)
+        }
+        
+
+        if(page >4 && page<pages-3){
             let button_mid = document.createElement('button');
 	        button_mid.innerText = page;
             button_mid.classList.add('active')
@@ -174,6 +193,24 @@ function DisplayList (page) {
             let button3p = document.createElement('button');
 	        button3p.innerText = page;
             button3p.classList.add('active')
+            let a3p = document.createElement('a')
+            a3p.setAttribute('href', "#container")
+            a3p.appendChild(button3p)
+            pagination_div.appendChild(a3p);
+        }
+        if(page === pages - 3){
+             if(!(pages === 7  && page === 4)){
+                let button4p = document.createElement('button');
+                button4p.innerText = page;
+                button4p.classList.add('active')
+                let a4p = document.createElement('a')
+                a4p.setAttribute('href', "#container")
+                a4p.appendChild(button4p)
+                pagination_div.appendChild(a4p);
+             }
+
+            let button3p = document.createElement('button');
+	        button3p.innerText = page+1;
             let a3p = document.createElement('a')
             a3p.setAttribute('href', "#container")
             a3p.appendChild(button3p)
