@@ -8,7 +8,228 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<!-- <link rel="stylesheet" href="style.css"> -->
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    
+}
+
+body{
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: white;
+}
+
+.container{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 0;
+    flex-wrap: wrap;
+}
+
+.container .box{
+    position: relative;
+    width: 300px;
+    height: 380px;
+    color: #fff;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 30px;
+    transition: 0.5s;
+}
+
+.container .box:hover{
+    transform: translateY(-20px);
+
+}
+.container .box::before
+{
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(315deg,#4dff03,#00d0ff);
+}
+
+.container .box::after
+{
+    content:'';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(315deg,#4dff03,#00d0ff);
+    filter: blur(20px);
+}
+
+.container .box span{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    background: rgba(0,0,0,0.9);
+    z-index: 2;
+}
+
+
+.container .box .content{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 6px;
+    z-index: 10;
+    
+    
+    
+}
+.container .box .content .remaining_div{
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 140px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    text-transform:  uppercase;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4 );
+    background-size: 400%;
+    border-bottom-right-radius: 20px;
+    animation: animate 8s linear infinite;
+}
+@keyframes animate{
+    0%{
+        background-position: 0%;
+    }
+    100%{
+        background-position: 400%;
+    }
+}
+
+.container .box h2{
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #fff;
+    margin: 10px;
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+
+
+}
+.container .box .author_div{
+    font-weight: 100;
+    margin: 10px;
+    margin-top: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+
+
+}
+
+.container .box .category{
+    text-align: center;
+    font-weight: 700;
+    margin: 10px;
+    margin-top: 25px;
+    font-size: 1.1em;
+
+}
+
+.container .box .review{
+
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    font-size: 1.2em;
+
+}
+
+
+.container .box .content .rating_div{
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    text-transform:  uppercase;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4 );
+    background-size: 400%;
+    border-top-left-radius: 10px;
+    animation: animate 8s linear infinite;
+   
+}
+
+
+.pagenumbers {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+    margin-bottom: 5%;
+}
+
+.pagenumbers button {
+	width: 50px;
+	height: 50px;
+    text-align: center;
+	appearance: none;
+	border: none;
+	outline: none;
+	cursor: pointer;
+
+	background-color: #44AAEE;
+
+	margin: 5px;
+	transition: 0.4s;
+
+	color: #FFF;
+	font-size: 18px;
+	text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pagenumbers button:hover {
+	background-color: #44EEAA;
+}
+
+.pagenumbers button.active {
+	background-color: #44EEAA;
+	box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2);
+}
+
+.colum{
+    display: flex;
+    flex-direction: column;
+}
+</style>
 </head>
 <body>
 
@@ -35,7 +256,7 @@ DisplayList(current_page)
 
 function DisplayList (page) {
 
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&discount=100&length=12&page='+ page +'&inkw=&language='
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=created_d&sortDir=DESC&discount=100&length=12&page='+ page +'&inkw=&language='
 	
     fetch(apiUrl
 ).then((response)=>{
@@ -152,31 +373,12 @@ function DisplayList (page) {
             a3.appendChild(button3)
             pagination_div.appendChild(a3);
         }
-         if(page === 4){
-             let button3 = document.createElement('button');
-	        button3.innerText = 3;
-            let a3 = document.createElement('a')
-            a3.setAttribute('href', "#container")
-            a3.appendChild(button3)
-            pagination_div.appendChild(a3);
 
-            let button4 = document.createElement('button');
-	        button4.innerText = page;
-            button4.classList.add('active')
-            let a4 = document.createElement('a')
-            a4.setAttribute('href', "#container")
-            a4.appendChild(button4)
-            pagination_div.appendChild(a4);
-        }
+        let button = document.createElement('button');
+        button.innerText = "..."
+        pagination_div.appendChild(button)
 
-        if(!(pages === 7  && page === 4)){
-            let button = document.createElement('button');
-            button.innerText = "..."
-            pagination_div.appendChild(button)
-        }
-        
-
-        if(page >4 && page<pages-3){
+        if(page >3 && page<pages-2){
             let button_mid = document.createElement('button');
 	        button_mid.innerText = page;
             button_mid.classList.add('active')
@@ -193,24 +395,6 @@ function DisplayList (page) {
             let button3p = document.createElement('button');
 	        button3p.innerText = page;
             button3p.classList.add('active')
-            let a3p = document.createElement('a')
-            a3p.setAttribute('href', "#container")
-            a3p.appendChild(button3p)
-            pagination_div.appendChild(a3p);
-        }
-        if(page === pages - 3){
-             if(!(pages === 7  && page === 4)){
-                let button4p = document.createElement('button');
-                button4p.innerText = page;
-                button4p.classList.add('active')
-                let a4p = document.createElement('a')
-                a4p.setAttribute('href', "#container")
-                a4p.appendChild(button4p)
-                pagination_div.appendChild(a4p);
-             }
-
-            let button3p = document.createElement('button');
-	        button3p.innerText = page+1;
             let a3p = document.createElement('a')
             a3p.setAttribute('href', "#container")
             a3p.appendChild(button3p)
