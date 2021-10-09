@@ -21,6 +21,13 @@ chrome.commands.onCommand.addListener((command) => {
     }if (command == 'pause'){
         setOffSwitch()
         update_badge(false)
+    }if (command == 'continue'){
+        setIndexToNext()
+        sendMessage('enroll')
+        sendMessageToPopup('update_ui')
+        setTimeout(openEnrollCoursePage, 500)
+        setOnSwitch()
+        update_badge(true)
     }
 });
 

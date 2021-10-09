@@ -11,7 +11,7 @@
   "browser_action": {
     "default_icon": "icons/icon16x16.png",
     "default_popup": "popup.html",
-    "default_title": "Welcome to my extension"
+    "default_title": "Blog BatDauLapTrinh"
   },
   "content_scripts": [
     {
@@ -59,6 +59,12 @@
         "default": "Alt+P"
       },
       "description": "pause auto"
+    },
+    "continue": {
+      "suggested_key": {
+        "default": "Alt+C"
+      },
+      "description": "continue auo"
     }
   },
   "options_page": "options.html",

@@ -74,9 +74,9 @@ function hanle_onclick_switch(){
 
 function handle_onclick_bottom_item(){
 
-    let options = document.getElementById('options')
-    options.onclick = function (button) {
-        chrome.tabs.create({ url: "options.html" })
+    let questions = document.getElementById('questions')
+    questions.onclick = function (button) {
+        chrome.tabs.create({ url: "questions.html" })
     }
 
     let facebook = document.getElementById('facebook')
