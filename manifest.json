@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Udemy Coupons",
-  "description": "This extension save your money",
-  "version": "1.0",
+  "description": "This extension save your money by enroll 100% sale off course in Udemy",
+  "version": "0.1",
   "icons": {
     "192": "icons/icon192x192.png",
     "32": "icons/icon32x32.png",
@@ -11,19 +11,27 @@
   "browser_action": {
     "default_icon": "icons/icon16x16.png",
     "default_popup": "popup.html",
-    "default_title": "Hello"
+    "default_title": "Welcome to my extension"
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
-      "include_globs": ["*://*.udemy.*/*"],
+      "matches": [
+        "*://*/*"
+      ],
+      "include_globs": [
+        "*://*.udemy.*/*"
+      ],
       "all_frames": true,
-      "js": ["content.js"],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_end"
     }
   ],
   "background": {
-    "scripts": ["background.js"],
+    "scripts": [
+      "background.js"
+    ],
     "persistent": false
   },
   "permissions": [
@@ -34,12 +42,23 @@
     "tabs"
   ],
   "commands": {
-    "my_command": {
+    "show_all_coupons": {
       "suggested_key": {
-        "default": "Ctrl+Shift+F",
-        "mac": "MacCtrl+Shift+F"
+        "default": "Alt+L"
       },
-      "description": "Opens popup"
+      "description": "show all available coupons in new tab"
+    },
+    "auto_enroll_100coupons": {
+      "suggested_key": {
+        "default": "Alt+A"
+      },
+      "description": "auto to enroll 100 coupons"
+    },
+    "pause": {
+      "suggested_key": {
+        "default": "Alt+P"
+      },
+      "description": "pause auto"
     }
   },
   "options_page": "options.html",

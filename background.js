@@ -3,6 +3,28 @@ chrome.runtime.onInstalled.addListener(function () {
     openWelcomePage()
 });
 
+chrome.commands.onCommand.addListener((command) => {
+    console.log(command)
+    if (command == 'auto_enroll_100coupons') {
+        let numberOfCourse = 100
+        setnumberOfEnrollCourse(numberOfCourse)
+        fetchAPI(numberOfCourse)
+        sendMessage('enroll')
+        setTimeout(openNewTab, 500);
+        setIndexToZero()
+        setTimeout(openEnrollCoursePage, 1500)
+        setOnSwitch()
+        update_badge(True)
+    }if (command == 'show_all_coupons') {
+        var newURL = "https://batdaulaptrinh.com/udemy_coupons/";
+        chrome.tabs.create({ url: newURL });
+    }if (command == 'pause'){
+        setOffSwitch()
+        update_badge(False)
+    }
+});
+
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     console.log('message is ' + request.message)
     if (request.message == 'auto_click') {
@@ -20,9 +42,35 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         sendMessage('enroll')
         sendMessageToPopup('update_ui')
         setTimeout(openEnrollCoursePage, 500)
-        // sendMessage('update_ui')
     }
 })
+
+function update_badge(isOn){
+    if(isOn){
+        chrome.browserAction.setBadgeText({text: "ON"})
+        chrome.browserAction.setBadgeBackgroundColor({ color: "#00FF00" })
+    }else if(isON == null){
+        chrome.browserAction.setBadgeText({text: "STOP"})
+        chrome.browserAction.setBadgeBackgroundColor({ color: "#FF0000" })
+    }else{
+        chrome.browserAction.setBadgeText({text: "PAUSE"})
+        chrome.browserAction.setBadgeBackgroundColor({ color: "#CCCC00" })
+    }
+}
+
+function createWindow(){
+    chrome.windows.create({
+        focused: true,
+        width: 400,
+        height: 600,
+        type: 'popup',
+        url: 'popup.html',
+        top: 0,
+        left: 0
+      },
+      () => {})
+}
+
 
 function setOnSwitch() {
     chrome.storage.sync.set({ 'KEY_ON_OFF': true }, function () { });
@@ -85,13 +133,13 @@ function openEnrollCoursePage() {
         console.log('open enroll course page')
 
         getCurrentIndex(function (index) {
-            var currentPage = Math.ceil((index+1) / 6)
+            var currentPage = Math.ceil((index + 1) / 6)
             var keyStrogae = 'KEY_STORAGE' + currentPage
             console.log('key storage is ' + keyStrogae + ' and number of enroll is ' + numberOfEnroll)
             chrome.storage.sync.get([keyStrogae], function (json) {
                 let arrayCourses = json[keyStrogae]
                 if (index < numberOfEnroll) {
-                    let urlEnroll = arrayCourses[index%6]
+                    let urlEnroll = arrayCourses[index % 6]
                     chrome.tabs.update({
                         url: urlEnroll
                     });
@@ -99,23 +147,24 @@ function openEnrollCoursePage() {
                 else {
                     console.log('set null switch')
                     setNullSwitch()
-                    sendMessageToPopup('update_ui')                    
+                    sendMessageToPopup('update_ui')
+                    update_badge(null)
                 }
-    
+
             })
-            
+
         })
 
     });
 }
 
-function setNullSwitch(){
+function setNullSwitch() {
     chrome.storage.sync.set({ 'KEY_ON_OFF': null }, function () { });
 }
 
-function sendMessageToPopup(msg){
+function sendMessageToPopup(msg) {
     chrome.runtime.sendMessage({
-        message:msg
+        message: msg
     })
 }
 
@@ -131,24 +180,24 @@ function fetchAPI(numberOfCourse) {
     console.log('start fetch api')
     var numberOfSet = Math.ceil(numberOfCourse / 6)
     for (let i = 0; i < numberOfSet; i++) {
-        storeAPIOfAllCourses(numberOfCourse,i)
+        storeAPIOfAllCourses(numberOfCourse, i)
     }
-    chrome.storage.sync.get(null, function(items) {
+    chrome.storage.sync.get(null, function (items) {
         var allKeys = Object.keys(items);
         console.log(allKeys);
     });
 }
 
-function storeAPIOfAllCourses(numberOfCourse,page_nth) {
+function storeAPIOfAllCourses(numberOfCourse, page_nth) {
     page_nth += 1
-    var length = (numberOfCourse > 6*page_nth)?6:numberOfCourse-6*(page_nth-1)
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length='+length+'&page=' + page_nth + '&inkw=&discount=100&language='
+    var length = (numberOfCourse > 6 * page_nth) ? 6 : numberOfCourse - 6 * (page_nth - 1)
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=' + length + '&page=' + page_nth + '&inkw=&discount=100&language='
     console.log('api is ' + apiUrl)
     fetch(apiUrl
     )
-    .then((response) => {
-        return response.json();
-    })
+        .then((response) => {
+            return response.json();
+        })
         .then((json) => {
             let courses = getCourse(json)
             let arrayCourses = jsonToArrayCourses(courses)

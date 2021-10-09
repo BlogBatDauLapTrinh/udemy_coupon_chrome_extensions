@@ -4,59 +4,119 @@ let autoState = document.getElementById('auto_state')
 let numberAvailable = document.getElementById('numberOfAvailableCoupons')
 let currentEnrolled = document.getElementById('currentEnrolled')
 
-chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
-    let isOnSwitch = result['KEY_ON_OFF']
-    if (isOnSwitch) {
-        switchOnOff.src = '/images/green.png'
-        autoState.innerText = 'AUTO IS ON'
-    }else if(isOnSwitch == null){
-        switchOnOff.src = '/images/red.png'
-        autoState.innerText = 'AUTO IS STOP'
-    }else if(isOnSwitch == false){
-        switchOnOff.src = '/images/red.png'
-        autoState.innerText = 'AUTO IS PAUSE'
-    }
-})
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if(request.message == 'update_ui'){
         updateUI()
-        // alert('update_ui')
-        let autoState = document.getElementById('auto_state')
         autoState.innerText = 'update_ui'
+    }else if(request.message == 'update_badge'){
+        initialize_auto_state()
     }
-    // alert('receive message ' + request.message)
 })
 
+let auto_enroll1 = document.getElementById('auto_enroll1')
+auto_enroll1.onclick = function (button) {
+    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 100 });
+}
 
+
+let show_coupons = document.getElementById('show_coupons');
+show_coupons.onclick = function (button) {
+console.log('navigate to show coupon page')
+var newURL = "https://batdaulaptrinh.com/udemy_coupons/";
+chrome.tabs.create({ url: newURL });
+}
+
+
+initialize_auto_state()
+hanle_onclick_switch()
+handle_onclick_bottom_item()
 showNumberOfAvailableCouponToday()
 showStatusEnrollCourse()
 
-switchOnOff.onclick = function (button) {
-    updateUI()
+function initialize_auto_state(){
     chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         let isOnSwitch = result['KEY_ON_OFF']
         if (isOnSwitch) {
-
-
-            setOffSwitch()
-            autoState.innerText = 'AUTO IS PAUSED'
-            switchOnOff.src = '/images/red.png'
-        } else {
-            autoHasBeenStoped(function (isStop) {
-                if (isStop) {
-                    alert('Auto has been stop')
-                    return
-                } else if(isStop == false) {
-                    setOnSwitch()
-                    autoState.innerText = 'AUTO IS ON'
-                    switchOnOff.src = '/images/green.png'
-                    chrome.runtime.sendMessage({ message: 'continue' });
-                }
-            })
+            updateOnSwitchUI()
+        }else if(isOnSwitch == null){
+            updateStopSwitchUI()
+        }else if(isOnSwitch == false){
+            updatePauseSwitchUI()
         }
     })
+    
 }
+
+function hanle_onclick_switch(){
+    switchOnOff.onclick = function (button) {
+        updateUI()
+        chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
+            let isOnSwitch = result['KEY_ON_OFF']
+            if (isOnSwitch) {
+                setOffSwitch()
+                updatePauseSwitchUI()
+            } else {
+                autoHasBeenStoped(function (isStop) {
+                    if (isStop) {
+                        alert('Auto has been stop')
+                        return
+                    } else if(isStop == false) {
+                        setOnSwitch()
+                        updateOnSwitchUI()
+                        chrome.runtime.sendMessage({ message: 'continue' });
+                    }
+                })
+            }
+        })
+    }    
+}
+
+function handle_onclick_bottom_item(){
+
+    let options = document.getElementById('options')
+    options.onclick = function (button) {
+        chrome.tabs.create({ url: "options.html" })
+    }
+
+    let facebook = document.getElementById('facebook')
+    facebook.onclick = function (button) {
+        chrome.tabs.create({ url: "https://www.facebook.com/huythanh.cs/" })
+    }
+
+    let github = document.getElementById('github')
+    github.onclick = function (button) {
+        chrome.tabs.create({ url: "https://github.com/Huythanh0x/udemy_coupon_chrome_extensions" })
+    }
+
+    let bug = document.getElementById('bug')
+    bug.onclick = function (button) {
+        chrome.tabs.create({ url: "https://mail.google.com/mail/?view=cm&fs=1&to=batdaulaptrinh@gmail.com&su=Phản ánh về bug tại extensions Auto udemy coupons&body=Tôi có dùng extension và phát hiện các lỗi sau" })
+    }
+
+}
+
+function updateOnSwitchUI(){
+    switchOnOff.src = '/images/green.png'
+    autoState.innerText = 'AUTO IS ON'
+    chrome.browserAction.setBadgeText({text: "ON"})
+    chrome.browserAction.setBadgeBackgroundColor({ color: '#00FF00' })
+}
+
+function updatePauseSwitchUI(){
+    switchOnOff.src = '/images/yellow.png'
+    autoState.innerText = 'AUTO IS PAUSE'
+    chrome.browserAction.setBadgeText({text: "PAUSE"})
+    chrome.browserAction.setBadgeBackgroundColor({ color: '#CCCC00' }) 
+}
+
+function updateStopSwitchUI(){
+    switchOnOff.src = '/images/red.png'
+    autoState.innerText = 'AUTO IS STOP'
+    chrome.browserAction.setBadgeText({text: "STOP"})
+    chrome.browserAction.setBadgeBackgroundColor({ color: '#FF0000' })
+}
+
 
 function setIndexToPrevious() {
     getCurrentIndex(function (index) {
@@ -72,14 +132,11 @@ function updateUI(){
     chrome.storage.sync.get(['KEY_ON_OFF'], function (result) {
         let isOnSwitch = result['KEY_ON_OFF']
         if (isOnSwitch) {
-            switchOnOff.src = '/images/green.png'
-            autoState.innerText = 'AUTO IS ON'
+            updateOnSwitchUI()
         }else if(isOnSwitch == null){
-            switchOnOff.src = '/images/red.png'
-            autoState.innerText = 'AUTO IS STOP'
+            updateStopSwitchUI()
         }else if(isOnSwitch == false){
-            switchOnOff.src = '/images/red.png'
-            autoState.innerText = 'AUTO IS PAUSE'
+            updatePauseSwitchUI()
         }
     })
     
@@ -168,28 +225,3 @@ function getCurrentIndex(callback) {
         callback(currentIndex)
     })
 }
-
-let show_coupons = document.getElementById('show_coupons');
-show_coupons.onclick = function (button) {
-    console.log('navigate to show coupon page')
-    var newURL = "https://batdaulaptrinh.com/udemy_coupons/";
-    chrome.tabs.create({ url: newURL });
-}
-
-let auto_enroll1 = document.getElementById('auto_enroll1')
-auto_enroll1.onclick = function (button) {
-    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 100 });
-}
-
-let auto_enroll2 = document.getElementById('auto_enroll2')
-auto_enroll2.onclick = function (button) {
-    chrome.runtime.sendMessage({ message: 'auto_click', numberOfCourse: 3 });
-}
-
-let options = document.getElementById('options')
-options.onclick = function (button) {
-    chrome.tabs.create({ url: "options.html" })
-}
-
-
-

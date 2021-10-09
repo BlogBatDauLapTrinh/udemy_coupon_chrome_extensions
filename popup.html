@@ -4,72 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="popup.css">
     <title>POPUP</title>
-    <style>
-        #switchOnOff {
-            width: 50%;
-            margin-left: auto;
-            margin-right: auto;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        button {
-            width: 270px;
-        }
-
-        button img {
-            float: left;
-            width: 50px;
-        }
-
-        button span {
-            float: right;
-            width: 80%;
-            margin: auto;
-            text-align: center;
-        }
-
-        h3{
-            text-align: center;
-        }
-        h5{
-            text-align: center;
-            color: aqua;
-        }
-    </style>
 </head>
 
 <body>
-    <div>
-        <img src="/images/red.png"
-            role="button" id='switchOnOff' />
+    <div id="container">
+        <img src="/images/red.png" role="button" id='switchOnOff' />
         <h3 id='auto_state'></h3>
-        <h5 id ='numberOfAvailableCoupons'> LOADING </h5>
+        <h5 id='numberOfAvailableCoupons'> LOADING </h5>
         <h5 id="currentEnrolled"></h5>
         <button id="show_coupons">
-            <img
-                src="/images/coupons.png" />
+            <img src="/images/coupons.png" />
             <span>Show all available coupons</span>
         </button>
 
         <button id="auto_enroll1">
-            <img src="/images/new.png" />
+            <img src="/images/auto.png" />
             <span>Auto 100 courses</span>
         </button>
 
-        <button id="auto_enroll2">
-            <img
-                src="/images/old.png" />
-            <span>Auto 10 courses</span>
-        </button>
-
-        <button id="options">
-            <img
-                src="/images/options.png" />
-            <span>options</span>
-        </button>
+        <ul>
+            <li id='facebook'><a href="#"><span></span></a></li>
+            <li id='github'><a href="#"><span></span></a></li>
+            <li id ='options'><a href="#"><span></span></a></li>
+            <li id='bug'><a href="#"><span></span></a></li>
+        </ul>
     </div>
 </body>
 <script src="popup.js"></script>
