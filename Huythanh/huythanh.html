@@ -1,455 +1,530 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>New Tab</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,300&display=swap" rel="stylesheet">
-<!-- <link rel="stylesheet" href="style.css"> -->
-<style>
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    text-decoration: none;
-    
-}
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,400;0,700;1,300&display=swap"
+        rel="stylesheet">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        #search_bar {
+            background: #e0dbef;
+        }
 
-body{
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: white;
-}
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.container{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 0;
-    flex-wrap: wrap;
-}
+        .search_box {
+            background: #b8b3c5;
+            position: relative;
+            padding: 15px;
+            border-radius: 50px;
+            display: flex;
+        }
 
-.container .box{
-    position: relative;
-    width: 300px;
-    height: 380px;
-    color: #fff;
-    background: #111;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 30px;
-    transition: 0.5s;
-}
+        .search_box .search_btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #21bd13;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            margin-right: 15px;
+            cursor: pointer;
+        }
 
-.container .box:hover{
-    transform: translateY(-20px);
+        .search_box .input_search {
+            outline: none;
+            border: 0;
+            background: #30772a;
+            border-radius: 50px;
+            padding: 15px 20px;
+            width: 300px;
+            height: 50px;
+            color: #fff;
+        }
 
-}
-.container .box::before
-{
-    content:'';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(315deg,#4dff03,#00d0ff);
-}
+        ::placeholder {
+            color: #fff;
+        }
 
-.container .box::after
-{
-    content:'';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(315deg,#4dff03,#00d0ff);
-    filter: blur(20px);
-}
+        ::-webkit-input-placeholder {
+            color: #fff;
+        }
 
-.container .box span{
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    right: 6px;
-    bottom: 6px;
-    background: rgba(0,0,0,0.9);
-    z-index: 2;
-}
+        :-ms-input-placeholder {
+            color: #fff;
+        }
 
 
-.container .box .content{
-    position: relative;
-    height: 100%;
-    width: 100%;
-    padding: 6px;
-    z-index: 10;
-    
-    
-    
-}
-.container .box .content .remaining_div{
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 140px;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-    text-transform:  uppercase;
-    text-decoration: none;
-    box-sizing: border-box;
-    background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4 );
-    background-size: 400%;
-    border-bottom-right-radius: 20px;
-    animation: animate 8s linear infinite;
-}
-@keyframes animate{
-    0%{
-        background-position: 0%;
-    }
-    100%{
-        background-position: 400%;
-    }
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+            text-decoration: none;
 
-.container .box h2{
-    font-size: 1.1em;
-    font-weight: 700;
-    color: #fff;
-    margin: 10px;
-    margin-bottom: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-word;
+        }
 
+        body {
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #e0dbef;
+        }
 
-}
-.container .box .author_div{
-    font-weight: 100;
-    margin: 10px;
-    margin-top: 5px;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-word;
+        .container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+            flex-wrap: wrap;
+        }
 
+        .container .box {
+            position: relative;
+            width: 300px;
+            height: 380px;
+            color: #fff;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 30px;
+            transition: 0.5s;
+        }
 
-}
+        .container .box:hover {
+            transform: translateY(-20px);
 
-.container .box .category{
-    text-align: center;
-    font-weight: 700;
-    margin: 10px;
-    margin-top: 25px;
-    font-size: 1.1em;
+        }
 
-}
+        .container .box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(315deg, #4dff03, #00d0ff);
+        }
 
-.container .box .review{
+        .container .box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(315deg, #4dff03, #00d0ff);
+            filter: blur(20px);
+        }
 
-    position: absolute;
-    left: 8px;
-    bottom: 8px;
-    font-size: 1.2em;
-
-}
+        .container .box span {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2;
+        }
 
 
-.container .box .content .rating_div{
-    position: absolute;
-    bottom: 6px;
-    right: 6px;
-    width: 60px;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-    text-transform:  uppercase;
-    text-decoration: none;
-    box-sizing: border-box;
-    background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4 );
-    background-size: 400%;
-    border-top-left-radius: 10px;
-    animation: animate 8s linear infinite;
-   
-}
+        .container .box .content {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            padding: 6px;
+            z-index: 10;
 
 
-.pagenumbers {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
-    margin-bottom: 5%;
-}
 
-.pagenumbers button {
-	width: 50px;
-	height: 50px;
-    text-align: center;
-	appearance: none;
-	border: none;
-	outline: none;
-	cursor: pointer;
+        }
 
-	background-color: #44AAEE;
+        .container .box .content .remaining_div {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 140px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-sizing: border-box;
+            background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+            background-size: 400%;
+            border-bottom-right-radius: 20px;
+            animation: animate 8s linear infinite;
+        }
 
-	margin: 5px;
-	transition: 0.4s;
+        @keyframes animate {
+            0% {
+                background-position: 0%;
+            }
 
-	color: #FFF;
-	font-size: 18px;
-	text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-}
+            100% {
+                background-position: 400%;
+            }
+        }
 
-.pagenumbers button:hover {
-	background-color: #44EEAA;
-}
+        .container .box h2 {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #fff;
+            margin: 10px;
+            margin-bottom: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
 
-.pagenumbers button.active {
-	background-color: #44EEAA;
-	box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2);
-}
 
-.colum{
-    display: flex;
-    flex-direction: column;
-}
-</style>
+        }
+
+        .container .box .author_div {
+            font-weight: 100;
+            margin: 10px;
+            margin-top: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
+
+
+        }
+
+        .container .box .category {
+            text-align: center;
+            font-weight: 700;
+            margin: 10px;
+            margin-top: 25px;
+            font-size: 1.1em;
+
+        }
+
+        .container .box .review {
+
+            position: absolute;
+            left: 8px;
+            bottom: 8px;
+            font-size: 1.2em;
+
+        }
+
+
+        .container .box .content .rating_div {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            text-transform: uppercase;
+            text-decoration: none;
+            box-sizing: border-box;
+            background: linear-gradient(90deg, #03a9f4, #f441a5, #ffeb3b, #03a9f4);
+            background-size: 400%;
+            border-top-left-radius: 10px;
+            animation: animate 8s linear infinite;
+
+        }
+
+
+        .pagenumbers {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5%;
+        }
+
+        .pagenumbers button {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            appearance: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+
+            background-color: #44AAEE;
+
+            margin: 5px;
+            transition: 0.4s;
+
+            color: #FFF;
+            font-size: 18px;
+            text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .pagenumbers button:hover {
+            background-color: #44EEAA;
+        }
+
+        .pagenumbers button.active {
+            background-color: #44EEAA;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .colum {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
-<body>
 
-    <div class="colum">
-        <div id ="container" class="container">
-        
+<body>
+    <div id='xxxx'>
+
+        <div id='search_bar'>
+            <div class="wrapper">
+                <div class="search_box">
+                    <div class="search_btn"><i class="fas fa-search"></i></div>
+                    <input type="text" class="input_search" placeholder="What are you looking for?">
+                </div>
+            </div>
         </div>
-    
+
+    </div>
+    <div class="colum">
+        <div id="container" class="container">
+
+        </div>
+
         <div class="pagenumbers" id="pagination"></div>
 
     </div>
-    
-    <script >
-const container_div = document.getElementById('container');
-const pagination_div = document.getElementById('pagination');
+
+    <script>
+        const container_div = document.getElementById('container');
+        const pagination_div = document.getElementById('pagination');
 
 
-today = new Date().getTime()
+        today = new Date().getTime()
 
-let current_page = 1;
-
-
-DisplayList(current_page)
-
-function DisplayList (page) {
-
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=created_d&sortDir=DESC&discount=100&length=12&page='+ page +'&inkw=&language='
-	
-    fetch(apiUrl
-).then((response)=>{
-      return response.json();
-  })
-  .then((json) => {
-    let courses = json["results"]
-    let pages = json["pages"]
-    container_div.innerHTML = ''
-    pagination_div.innerHTML = ''
-	for (let course of courses) {
-	
-     
-
-          //tạo thẻ Ngày còn lại
-          endTime =Date.parse(course['EndTime'])
-            timeLeft = new Date(endTime-today)
-             
-            let remaining = document.createElement('div')
-            remaining.classList.add('remaining_div')
-            dayLeft = timeLeft.getDate() != 0 ? timeLeft.getDate()-1: timeLeft.getDate()
-            remaining.textContent = dayLeft != 0 ? dayLeft === 1 ? dayLeft + ' day left' : dayLeft+ " days left" : timeLeft.getHours() === 1 ? timeLeft.getHours() + " hour left":  timeLeft.getHours() + " hours left"
-            
-            //tạo thẻ tác giả
-            let author = document.createElement('p');
-            author.classList.add('author_div')
-            auContent=course['Author']
-            if (auContent != null) 
-            author.textContent= auContent
-
-            //tạo thẻ category
-            let category = document.createElement('div')
-            category.classList.add('category')
-            category.textContent = course['Category']
-
-            //tạo thẻ review
-            let review = document.createElement('div')
-            review.classList.add('review')
-            review.innerHTML= course['Reviews'] + '✍'
-
-            //tạo thẻ rating
-            let rating = document.createElement('div')
-            rating.classList.add('rating_div')
-            rating.textContent = course['Rating'] +'⭐'
+        let current_page = 1;
 
 
-            //tạo thẻ Img
-            let img = document.createElement('img');
-            img.src = course['ImageUrl'];
-            img.setAttribute('width','100%');
-            
-            //tạo khung card
-            let box = document.createElement('div')
-            box.classList.add("box")
+        DisplayList(current_page)
 
-            box.appendChild(document.createElement('span')) 
+        function DisplayList(page) {
 
-            let content_div = document.createElement('div')
-            content_div.classList.add("content")
-            box.appendChild(content_div)
+            let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=created_d&sortDir=DESC&discount=100&length=12&page=' + page + '&inkw=&language='
 
-            //tao thẻ link
-            let link= document.createElement('a')
-            link.setAttribute('href', course['CouponLink'])
-            link.setAttribute("target", "_blank")
+            fetch(apiUrl
+            ).then((response) => {
+                return response.json();
+            })
+                .then((json) => {
+                    let courses = json["results"]
+                    let pages = json["pages"]
+                    container_div.innerHTML = ''
+                    pagination_div.innerHTML = ''
+                    for (let course of courses) {
 
 
-            //Thêm các thành phần vào card
-            content_div.appendChild(img);
-            let h2_title = document.createElement('h2')
-            title = course['Title']
-            h2_title.textContent=title;
-            content_div.append(h2_title)
-            content_div.appendChild(rating)
-            if (auContent != null) content_div.appendChild(author)
-            content_div.appendChild(remaining)
-            content_div.appendChild(category)
-            content_div.appendChild(review)
-            link.appendChild(box)
-            container_div.appendChild(link);
 
-		
-	}
+                        //tạo thẻ Ngày còn lại
+                        endTime = Date.parse(course['EndTime'])
+                        timeLeft = new Date(endTime - today)
 
-    // set up pagination
-    if(page != 1){
-        let button_pre = document.createElement('button');
-        button_pre.innerText = "<"
-        button_pre.addEventListener('click', function () {
-		current_page = page-1;
-		DisplayList(current_page);})
-        let a_pre = document.createElement('a')
-        a_pre.setAttribute('href', "#container")
-        a_pre.appendChild(button_pre)
-		pagination_div.appendChild(a_pre);
-    }
-        
+                        let remaining = document.createElement('div')
+                        remaining.classList.add('remaining_div')
+                        dayLeft = timeLeft.getDate() != 0 ? timeLeft.getDate() - 1 : timeLeft.getDate()
+                        remaining.textContent = dayLeft != 0 ? dayLeft === 1 ? dayLeft + ' day left' : dayLeft + " days left" : timeLeft.getHours() === 1 ? timeLeft.getHours() + " hour left" : timeLeft.getHours() + " hours left"
+
+                        //tạo thẻ tác giả
+                        let author = document.createElement('p');
+                        author.classList.add('author_div')
+                        auContent = course['Author']
+                        if (auContent != null)
+                            author.textContent = auContent
+
+                        //tạo thẻ category
+                        let category = document.createElement('div')
+                        category.classList.add('category')
+                        category.textContent = course['Category']
+
+                        //tạo thẻ review
+                        let review = document.createElement('div')
+                        review.classList.add('review')
+                        review.innerHTML = course['Reviews'] + '✍'
+
+                        //tạo thẻ rating
+                        let rating = document.createElement('div')
+                        rating.classList.add('rating_div')
+                        rating.textContent = course['Rating'] + '⭐'
 
 
-    if(pages > 6){
-        for (let i = 1; i <  3; i++) {
-		let btn = PaginationButton(i);
-        let a = document.createElement('a')
-        a.setAttribute('href', "#container")
-        a.appendChild(btn)
-		pagination_div.appendChild(a);
-	    }
-        if(page === 3){
-            let button3 = document.createElement('button');
-	        button3.innerText = page;
-            button3.classList.add('active')
-            let a3 = document.createElement('a')
-            a3.setAttribute('href', "#container")
-            a3.appendChild(button3)
-            pagination_div.appendChild(a3);
+                        //tạo thẻ Img
+                        let img = document.createElement('img');
+                        img.src = course['ImageUrl'];
+                        img.setAttribute('width', '100%');
+
+                        //tạo khung card
+                        let box = document.createElement('div')
+                        box.classList.add("box")
+
+                        box.appendChild(document.createElement('span'))
+
+                        let content_div = document.createElement('div')
+                        content_div.classList.add("content")
+                        box.appendChild(content_div)
+
+                        //tao thẻ link
+                        let link = document.createElement('a')
+                        link.setAttribute('href', course['CouponLink'])
+                        link.setAttribute("target", "_blank")
+
+
+                        //Thêm các thành phần vào card
+                        content_div.appendChild(img);
+                        let h2_title = document.createElement('h2')
+                        title = course['Title']
+                        h2_title.textContent = title;
+                        content_div.append(h2_title)
+                        content_div.appendChild(rating)
+                        if (auContent != null) content_div.appendChild(author)
+                        content_div.appendChild(remaining)
+                        content_div.appendChild(category)
+                        content_div.appendChild(review)
+                        link.appendChild(box)
+                        container_div.appendChild(link);
+
+
+                    }
+
+                    // set up pagination
+                    if (page != 1) {
+                        let button_pre = document.createElement('button');
+                        button_pre.innerText = "<"
+                        button_pre.addEventListener('click', function () {
+                            current_page = page - 1;
+                            DisplayList(current_page);
+                        })
+                        let a_pre = document.createElement('a')
+                        a_pre.setAttribute('href', "#container")
+                        a_pre.appendChild(button_pre)
+                        pagination_div.appendChild(a_pre);
+                    }
+
+
+
+                    if (pages > 6) {
+                        for (let i = 1; i < 3; i++) {
+                            let btn = PaginationButton(i);
+                            let a = document.createElement('a')
+                            a.setAttribute('href', "#container")
+                            a.appendChild(btn)
+                            pagination_div.appendChild(a);
+                        }
+                        if (page === 3) {
+                            let button3 = document.createElement('button');
+                            button3.innerText = page;
+                            button3.classList.add('active')
+                            let a3 = document.createElement('a')
+                            a3.setAttribute('href', "#container")
+                            a3.appendChild(button3)
+                            pagination_div.appendChild(a3);
+                        }
+
+                        let button = document.createElement('button');
+                        button.innerText = "..."
+                        pagination_div.appendChild(button)
+
+                        if (page > 3 && page < pages - 2) {
+                            let button_mid = document.createElement('button');
+                            button_mid.innerText = page;
+                            button_mid.classList.add('active')
+                            let a_mid = document.createElement('a')
+                            a_mid.setAttribute('href', "#container")
+                            a_mid.appendChild(button_mid)
+                            pagination_div.appendChild(a_mid);
+                            let buttondot = document.createElement('button');
+                            buttondot.innerText = "..."
+                            pagination_div.appendChild(buttondot)
+                        }
+
+                        if (page === pages - 2) {
+                            let button3p = document.createElement('button');
+                            button3p.innerText = page;
+                            button3p.classList.add('active')
+                            let a3p = document.createElement('a')
+                            a3p.setAttribute('href', "#container")
+                            a3p.appendChild(button3p)
+                            pagination_div.appendChild(a3p);
+                        }
+
+                        for (let i = pages - 1; i < pages + 1; i++) {
+                            let btn = PaginationButton(i);
+                            let a = document.createElement('a')
+                            a.setAttribute('href', "#container")
+                            a.appendChild(btn)
+                            pagination_div.appendChild(a);
+                        }
+                    } else {
+                        for (let i = 1; i < pages + 1; i++) {
+                            let btn = PaginationButton(i);
+                            let a = document.createElement('a')
+                            a.setAttribute('href', "#container")
+                            a.appendChild(btn)
+                            pagination_div.appendChild(a);
+                        }
+                    }
+                    if (page != pages) {
+                        let button_next = document.createElement('button');
+                        button_next.innerText = ">"
+                        button_next.addEventListener('click', function () {
+                            current_page = page + 1;
+                            DisplayList(current_page);
+                        })
+                        let a_next = document.createElement('a')
+                        a_next.setAttribute('href', "#container")
+                        a_next.appendChild(button_next)
+                        pagination_div.appendChild(a_next);
+                    }
+
+                })
+                .catch(err => { console.log(err) });
+
+
         }
+        function PaginationButton(page) {
+            let button = document.createElement('button');
+            button.innerText = page;
 
-        let button = document.createElement('button');
-        button.innerText = "..."
-        pagination_div.appendChild(button)
+            if (current_page == page) button.classList.add('active');
 
-        if(page >3 && page<pages-2){
-            let button_mid = document.createElement('button');
-	        button_mid.innerText = page;
-            button_mid.classList.add('active')
-            let a_mid = document.createElement('a')
-            a_mid.setAttribute('href', "#container")
-            a_mid.appendChild(button_mid)
-            pagination_div.appendChild(a_mid);
-            let buttondot = document.createElement('button');
-            buttondot.innerText = "..."
-            pagination_div.appendChild(buttondot)
+            button.addEventListener('click', function () {
+                current_page = page;
+                DisplayList(current_page);
+
+                button.classList.add('active');
+            });
+
+            return button;
         }
-
-        if(page === pages - 2){
-            let button3p = document.createElement('button');
-	        button3p.innerText = page;
-            button3p.classList.add('active')
-            let a3p = document.createElement('a')
-            a3p.setAttribute('href', "#container")
-            a3p.appendChild(button3p)
-            pagination_div.appendChild(a3p);
-        }
-
-        for (let i = pages-1; i<pages+1 ; i++) {
-		let btn = PaginationButton(i);
-        let a = document.createElement('a')
-        a.setAttribute('href', "#container")
-        a.appendChild(btn)
-		pagination_div.appendChild(a);
-	    }
-    }else{
-        for (let i = 1; i < pages + 1; i++) {
-		let btn = PaginationButton(i);
-        let a = document.createElement('a')
-        a.setAttribute('href', "#container")
-        a.appendChild(btn)
-		pagination_div.appendChild(a);
-	}
-    }
-    if(page != pages){
-        let button_next = document.createElement('button');
-        button_next.innerText = ">"
-        button_next.addEventListener('click', function () {
-		current_page = page+1;
-		DisplayList(current_page);})
-        let a_next = document.createElement('a')
-        a_next.setAttribute('href', "#container")
-        a_next.appendChild(button_next)
-		pagination_div.appendChild(a_next);
-    }
-      
-  })
-  .catch(err=>{console.log(err)});
-
-	
-}
-function PaginationButton (page) {
-	let button = document.createElement('button');
-	button.innerText = page;
-
-	if (current_page == page) button.classList.add('active');
-
-	button.addEventListener('click', function () {
-		current_page = page;
-		DisplayList(current_page);
-
-		button.classList.add('active');
-	});
-
-	return button;
-}
-
-</script>
+    </script>
 </body>
+<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+
 </html>
