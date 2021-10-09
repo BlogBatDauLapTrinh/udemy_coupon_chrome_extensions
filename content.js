@@ -1,6 +1,5 @@
 setTimeout(checkResul,2000)
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    alert(request.message)
     if (request.message == 'enroll') {
         setTimeout(function () {
             clickEnrollButton();
