@@ -14,13 +14,13 @@ chrome.commands.onCommand.addListener((command) => {
         setIndexToZero()
         setTimeout(openEnrollCoursePage, 1500)
         setOnSwitch()
-        update_badge(True)
+        update_badge(true)
     }if (command == 'show_all_coupons') {
         var newURL = "https://batdaulaptrinh.com/udemy_coupons/";
         chrome.tabs.create({ url: newURL });
     }if (command == 'pause'){
         setOffSwitch()
-        update_badge(False)
+        update_badge(false)
     }
 });
 
@@ -49,7 +49,7 @@ function update_badge(isOn){
     if(isOn){
         chrome.browserAction.setBadgeText({text: "ON"})
         chrome.browserAction.setBadgeBackgroundColor({ color: "#00FF00" })
-    }else if(isON == null){
+    }else if(isOn == null){
         chrome.browserAction.setBadgeText({text: "STOP"})
         chrome.browserAction.setBadgeBackgroundColor({ color: "#FF0000" })
     }else{
