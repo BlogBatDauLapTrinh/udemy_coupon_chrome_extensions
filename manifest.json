@@ -48,11 +48,11 @@
       },
       "description": "show all available coupons in new tab"
     },
-    "auto_enroll_100coupons": {
+    "auto_enroll_all_coupons": {
       "suggested_key": {
         "default": "Alt+A"
       },
-      "description": "auto to enroll 100 coupons"
+      "description": "auto to enroll all coupons"
     },
     "pause": {
       "suggested_key": {

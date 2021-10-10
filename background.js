@@ -5,16 +5,8 @@ chrome.runtime.onInstalled.addListener(function () {
 
 chrome.commands.onCommand.addListener((command) => {
     console.log(command)
-    if (command == 'auto_enroll_100coupons') {
-        let numberOfCourse = 100
-        setnumberOfEnrollCourse(numberOfCourse)
-        fetchAPI(numberOfCourse)
-        sendMessage('enroll')
-        setTimeout(openNewTab, 500);
-        setIndexToZero()
-        setTimeout(openEnrollCoursePage, 1500)
-        setOnSwitch()
-        update_badge(true)
+    if (command == 'auto_enroll_all_coupons') {
+        call_auto()
     }if (command == 'show_all_coupons') {
         var newURL = "https://batdaulaptrinh.com/udemy_coupons/";
         chrome.tabs.create({ url: newURL });
@@ -22,12 +14,7 @@ chrome.commands.onCommand.addListener((command) => {
         setOffSwitch()
         update_badge(false)
     }if (command == 'continue'){
-        setIndexToNext()
-        sendMessage('enroll')
-        sendMessageToPopup('update_ui')
-        setTimeout(openEnrollCoursePage, 500)
-        setOnSwitch()
-        update_badge(true)
+        call_continue()
     }
 });
 
@@ -35,22 +22,52 @@ chrome.commands.onCommand.addListener((command) => {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     console.log('message is ' + request.message)
     if (request.message == 'auto_click') {
-        let numberOfCourse = request.numberOfCourse
-        setnumberOfEnrollCourse(numberOfCourse)
-        fetchAPI(numberOfCourse)
+        call_auto()
+    } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases' || request.message == 'continue') {
+        call_continue()
+    }   
+})
+
+
+function call_auto(){
+    fetchNumberOfAvailableCouponToday()
+    chrome.storage.sync.get(['KEY_AVAILABLE_COUPON'], function (result) {
+        let numberOfAvailableCoupons = result['KEY_AVAILABLE_COUPON']
+        setnumberOfEnrollCourse(numberOfAvailableCoupons)
+        fetchAPI(numberOfAvailableCoupons)
         sendMessage('enroll')
         setTimeout(openNewTab, 500);
         setIndexToZero()
         setTimeout(openEnrollCoursePage, 1500)
         setOnSwitch()
+        update_badge(true)
+    })
+}
 
-    } else if (request.message == 'complete_a_course' || request.message == 'can_not_purchases' || request.message == 'continue') {
-        setIndexToNext()
-        sendMessage('enroll')
-        sendMessageToPopup('update_ui')
-        setTimeout(openEnrollCoursePage, 500)
-    }
-})
+function call_continue(){
+    setIndexToNext()
+    sendMessage('enroll')
+    sendMessageToPopup('update_ui')
+    setTimeout(openEnrollCoursePage, 500)
+    setOnSwitch()
+    update_badge(true)
+}
+
+function fetchNumberOfAvailableCouponToday() {
+
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=1&page=1&inkw=&discount=100&language='
+
+    fetch(apiUrl
+    ).then((response) => {
+        return response.json();
+    })
+        .then((json) => {
+            let numberOfAvailableCourse = json['recordsFiltered']
+            chrome.storage.sync.set({ 'KEY_AVAILABLE_COUPON': numberOfAvailableCourse }, function () {
+            });
+        }).catch(err => { console.log('encounter error ' + err) });
+}
+
 
 function update_badge(isOn){
     if(isOn){
