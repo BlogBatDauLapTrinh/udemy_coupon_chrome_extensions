@@ -215,7 +215,7 @@ function fetchAPI(numberOfCourse) {
 function storeAPIOfAllCourses(numberOfCourse, page_nth) {
     page_nth += 1
     var length = (numberOfCourse > 6 * page_nth) ? 6 : numberOfCourse - 6 * (page_nth - 1)
-    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=featured&sortDir=DESC&length=' + length + '&page=' + page_nth + '&inkw=&discount=100&language='
+    let apiUrl = 'https://teachinguide.azure-api.net/course-coupon?sortCol=created_d&sortDir=DESC&length=' + length + '&page=' + page_nth + '&inkw=&discount=100&language='
     console.log('api is ' + apiUrl)
     fetch(apiUrl
     )
