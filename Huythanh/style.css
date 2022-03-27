@@ -183,7 +183,7 @@ body{
 
 .search-filter-container{
     position: relative;
-    flex: 0.15;
+    flex: 0.2;
     width: 500px;
     height: 700px;
     color: #fff;
@@ -217,7 +217,7 @@ body{
     filter: blur(20px);
 }
 
-.search-filter-container span{
+.search-filter-container .vien{
     position: absolute;
     top: 6px;
     left: 6px;
@@ -234,11 +234,19 @@ body{
     width: 100%;
     padding: 6px;
     z-index: 10;
-    
-    
+    margin: 20px;
     
 }
 
+.search-filter-header h2{
+    position: relative;
+    left: 50%;
+    margin: 30px 0px;
+    width: fit-content;
+    transform: translateX(-50%);
+    font-size: 2rem;
+}
+.search-filter-header .all-search-filters{
 
-
+}
 
