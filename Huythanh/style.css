@@ -17,6 +17,7 @@ body{
 .container{
     flex: 1;
     position: relative;
+    margin-left: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -182,7 +183,7 @@ body{
 }
 
 .search-filter-container{
-    position: relative;
+    position: fixed;
     top: 40px;
     flex: 0.2;
     height: fit-content;
@@ -192,6 +193,7 @@ body{
     justify-content: center;
     align-items: center;
     margin: 20px 30px;
+    z-index: 11;
 }
 
 .search-filter-container::before
