@@ -20,8 +20,8 @@
         <span class="vien"></span>
         <div class="content">
           <div class="search-filter-header"></div>
-            <h2>Search Filter</h2>
-          </div>
+          <h2>Search Filter</h2>
+
           <div id="Discount" class="collapse show" role="tabpanel">
             <div class="discount_level_filter">
               <h3 class="filter-name">Languages</h3>
@@ -41,9 +41,7 @@
                       name="radio-sub-component-language"
                       class="custom-control-input"
                       id="language1"
-                    /><label
-                      class="custom-control-label"
-                      for="language1"
+                    /><label class="custom-control-label" for="language1"
                       ><span>All Languages</span></label
                     >
                   </div>
@@ -55,9 +53,7 @@
                       name="radio-sub-component-language"
                       class="custom-control-input"
                       id="language2"
-                    /><label
-                      class="custom-control-label"
-                      for="language2"
+                    /><label class="custom-control-label" for="language2"
                       ><span>English</span></label
                     >
                   </div>
@@ -84,9 +80,7 @@
                       class="custom-control-input"
                       value="0"
                       id="rating_option1"
-                    /><label
-                      class="custom-control-label"
-                      for="rating_option1"
+                    /><label class="custom-control-label" for="rating_option1"
                       ><span>All Ratings</span></label
                     >
                   </div>
@@ -99,9 +93,7 @@
                       class="custom-control-input"
                       value="4.5"
                       id="rating_option2"
-                    /><label
-                      class="custom-control-label"
-                      for="rating_option2"
+                    /><label class="custom-control-label" for="rating_option2"
                       ><span>4.5 and above</span></label
                     >
                   </div>
@@ -114,9 +106,7 @@
                       class="custom-control-input"
                       value="4"
                       id="rating_option3"
-                    /><label
-                      class="custom-control-label"
-                      for="rating_option3"
+                    /><label class="custom-control-label" for="rating_option3"
                       ><span>4.0 and above</span></label
                     >
                   </div>
@@ -144,9 +134,7 @@
                       class="custom-control-input"
                       value="3"
                       id="rating_option4"
-                    /><label
-                      class="custom-control-label"
-                      for="rating_option4"
+                    /><label class="custom-control-label" for="rating_option4"
                       ><span>3.0 and above</span></label
                     >
                   </div>
@@ -163,7 +151,6 @@
                   class="bv-no-focus-ring"
                   id="levels"
                 >
-                  
                   <div
                     class="custom-control custom-control-inline custom-radio"
                   >
@@ -173,9 +160,7 @@
                       class="custom-control-input"
                       value="All Levels"
                       id="level_option1"
-                    /><label
-                      class="custom-control-label"
-                      for="level_option1"
+                    /><label class="custom-control-label" for="level_option1"
                       ><span>All Levels</span></label
                     >
                   </div>
@@ -188,9 +173,7 @@
                       class="custom-control-input"
                       value="Beginner"
                       id="level_option2"
-                    /><label
-                      class="custom-control-label"
-                      for="level_option2"
+                    /><label class="custom-control-label" for="level_option2"
                       ><span>Beginner</span></label
                     >
                   </div>
@@ -203,9 +186,7 @@
                       class="custom-control-input"
                       value="Intermediate"
                       id="level_option3"
-                    /><label
-                      class="custom-control-label"
-                      for="level_option3"
+                    /><label class="custom-control-label" for="level_option3"
                       ><span>Intermediate</span></label
                     >
                   </div>
@@ -218,9 +199,7 @@
                       class="custom-control-input"
                       value="Expert"
                       id="level_option4"
-                    /><label
-                      class="custom-control-label"
-                      for="level_option4"
+                    /><label class="custom-control-label" for="level_option4"
                       ><span>Expert</span></label
                     >
                   </div>
@@ -246,9 +225,7 @@
                       class="custom-control-input"
                       value="0"
                       id="duration_option1"
-                    /><label
-                      class="custom-control-label"
-                      for="duration_option1"
+                    /><label class="custom-control-label" for="duration_option1"
                       ><span>All Durations</span></label
                     >
                   </div>
@@ -261,9 +238,7 @@
                       class="custom-control-input"
                       value="2"
                       id="duration_option2"
-                    /><label
-                      class="custom-control-label"
-                      for="duration_option2"
+                    /><label class="custom-control-label" for="duration_option2"
                       ><span>0 - 2 Hours</span></label
                     >
                   </div>
@@ -276,9 +251,7 @@
                       class="custom-control-input"
                       value="6"
                       id="duration_option3"
-                    /><label
-                      class="custom-control-label"
-                      for="duration_option3"
+                    /><label class="custom-control-label" for="duration_option3"
                       ><span>3 - 6 Hours</span></label
                     >
                   </div>
@@ -306,9 +279,7 @@
                       class="custom-control-input"
                       value="17"
                       id="duration_option5"
-                    /><label
-                      class="custom-control-label"
-                      for="duration_option5"
+                    /><label class="custom-control-label" for="duration_option5"
                       ><span>17+ Hours</span></label
                     >
                   </div>
@@ -319,20 +290,20 @@
           </div>
         </div>
       </div>
+
       <div id="container" class="container"></div>
     </div>
 
     <script>
+      radioLanguage = document.getElementById("language1");
+      radioLanguage.checked = true;
+      radioLanguage = document.getElementById("rating_option1");
+      radioLanguage.checked = true;
+      radioLanguage = document.getElementById("level_option1");
+      radioLanguage.checked = true;
+      radioLanguage = document.getElementById("duration_option1");
+      radioLanguage.checked = true;
 
-      radioLanguage = document.getElementById("language1"); 
-      radioLanguage.checked = true; 
-      radioLanguage = document.getElementById("rating_option1"); 
-      radioLanguage.checked = true; 
-      radioLanguage = document.getElementById("level_option1"); 
-      radioLanguage.checked = true; 
-      radioLanguage = document.getElementById("duration_option1"); 
-      radioLanguage.checked = true; 
-      
       const container_div = document.getElementById("container");
 
       today = new Date().getTime();
