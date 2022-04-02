@@ -40,6 +40,7 @@
                       type="radio"
                       name="radio-sub-component-language"
                       class="custom-control-input"
+                      value=""
                       id="language1"
                     /><label class="custom-control-label" for="language1"
                       ><span>All Languages</span></label
@@ -52,6 +53,7 @@
                       type="radio"
                       name="radio-sub-component-language"
                       class="custom-control-input"
+                      value="1"
                       id="language2"
                     /><label class="custom-control-label" for="language2"
                       ><span>English</span></label
@@ -171,7 +173,7 @@
                       type="radio"
                       name="radio-sub-component-level"
                       class="custom-control-input"
-                      value="Beginner"
+                      value="Beginner Level"
                       id="level_option2"
                     /><label class="custom-control-label" for="level_option2"
                       ><span>Beginner</span></label
@@ -184,7 +186,7 @@
                       type="radio"
                       name="radio-sub-component-level"
                       class="custom-control-input"
-                      value="Intermediate"
+                      value="Intermediate Level"
                       id="level_option3"
                     /><label class="custom-control-label" for="level_option3"
                       ><span>Intermediate</span></label
@@ -197,7 +199,7 @@
                       type="radio"
                       name="radio-sub-component-level"
                       class="custom-control-input"
-                      value="Expert"
+                      value="Expert Level"
                       id="level_option4"
                     /><label class="custom-control-label" for="level_option4"
                       ><span>Expert</span></label
@@ -295,6 +297,22 @@
     </div>
 
     <script>
+      let apiUrl = "https://raw.githubusercontent.com/Huythanh0x/LinhTinh/main/final_api.json";
+
+      const data = fetch(apiUrl)
+            .then((response) => {
+            return response.json();
+          });
+
+      data.then((json) => {
+          let courses = json["results"];
+          displayCards(courses);
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      //Set gia tri mac dinh cho cac buton radio
       radioLanguage = document.getElementById("language1");
       radioLanguage.checked = true;
       radioLanguage = document.getElementById("rating_option1");
@@ -304,19 +322,93 @@
       radioLanguage = document.getElementById("duration_option1");
       radioLanguage.checked = true;
 
-      const container_div = document.getElementById("container");
-
-      today = new Date().getTime();
-
-      let apiUrl =
-        "https://raw.githubusercontent.com/Huythanh0x/LinhTinh/main/final_api.json";
-
-      fetch(apiUrl)
-        .then((response) => {
-          return response.json();
-        })
-        .then((json) => {
+      //them them su kien khi change button radio 
+      document.querySelectorAll("input[name='radio-sub-component-language']").forEach((input) => {
+        input.addEventListener('change', (e)=>{
+        data.then((json) => {
           let courses = json["results"];
+          let afterFilter;
+          if(e.target.value == "1"){
+          afterFilter = courses.filter(course => course["locale"]== "English")
+          }else{
+            afterFilter = courses;
+          }
+          displayCards(afterFilter);
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+        
+        });
+
+      });
+      document.querySelectorAll("input[name='radio-sub-component-rating']").forEach((input) => {
+        input.addEventListener('change', (e)=>{
+          data.then((json) => {
+          let courses = json["results"];
+          const ratingFilter = courses.filter(course => course["rating"]>= e.target.value)
+          displayCards(ratingFilter);
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+        });
+      });
+
+      document.querySelectorAll("input[name='radio-sub-component-level']").forEach((input) => {
+      input.addEventListener('change', (e)=>{
+        data.then((json) => {
+        let courses = json["results"];
+        const ratingFilter = courses.filter(course => course["level"]== e.target.value)
+        displayCards(ratingFilter);
+        
+      })
+      .catch((err) => {
+        console.log(err);
+      }); });});
+
+      document.querySelectorAll("input[name='radio-sub-component-duration']").forEach((input) => {
+      input.addEventListener('change', (e)=>{
+        data.then((json) => {
+        let courses = json["results"];
+        let afterFilter = courses;
+        switch(e.target.value){
+          case "0":
+              afterFilter = courses;
+              break;
+          case "2":
+              afterFilter = courses.filter(course => (course["duration"]/60<3));
+              break;
+          case "6":
+              afterFilter = courses.filter(course => (course["duration"]/60>=3 && course["duration"]/60<7));
+              break;
+          case "16":
+              afterFilter = courses.filter(course => (course["duration"]/60>=7 && course["duration"]/60<17));
+              break;
+          case "17":
+              afterFilter = courses.filter(course => (course["duration"]/60>=17 ));
+              break;
+        }
+        
+        displayCards(afterFilter);
+        
+      })
+      .catch((err) => {
+        console.log(err);
+      });});});
+      
+        
+
+
+
+        const displayCards=(courses)=>{
+          const container_div = document.getElementById("container");
+
+           today = new Date().getTime();
           container_div.innerHTML = "";
           for (let course of courses) {
             //tạo thẻ Ngày còn lại
@@ -393,10 +485,7 @@
             link.appendChild(box);
             container_div.appendChild(link);
           }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        }
     </script>
   </body>
 </html>
