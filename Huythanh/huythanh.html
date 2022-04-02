@@ -334,43 +334,8 @@
           console.log(err);
         }); });
       });
-      // document.querySelectorAll("input[name='radio-sub-component-rating']").forEach((input) => {
-      //   input.addEventListener('change', (e)=>{
-      //     data.then((json) => {
-      //     let courses = json["results"];
-      //     displayCards(filterRating(courses));
-          
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-
-      //   });
-      // });
-
-      // document.querySelectorAll("input[name='radio-sub-component-level']").forEach((input) => {
-      // input.addEventListener('change', (e)=>{
-      //   data.then((json) => {
-      //   let courses = json["results"]; 
-      //   displayCards(filterLevel(courses));
-        
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // }); });});
-
-      // document.querySelectorAll("input[name='radio-sub-component-duration']").forEach((input) => {
-      // input.addEventListener('change', (e)=>{
-      //   data.then((json) => {
-      //   let courses = json["results"];
-      //   displayCards(filterDuration(courses));
-        
-      // })
-      // .catch((err) => {
-      //   console.log(err);
-      // });});});
-      
-      //Function filler 
+ 
+      //Filter functions 
       const filterRating=(courses)=>{
         const filter = document.querySelector('input[name="radio-sub-component-rating"]:checked').value;
         return courses.filter(course => course["rating"]>= filter);
@@ -386,6 +351,7 @@
       }
       const filterLevel=(courses)=>{
         const filter = document.querySelector('input[name="radio-sub-component-level"]:checked').value;
+        if(filter == "All Levels") return courses;
         return courses.filter(course => course["level"]== filter);
       }
       const filterDuration=(courses)=>{
