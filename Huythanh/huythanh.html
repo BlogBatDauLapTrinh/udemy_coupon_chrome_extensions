@@ -323,89 +323,93 @@
       radioLanguage.checked = true;
 
       //them them su kien khi change button radio 
-      document.querySelectorAll("input[name='radio-sub-component-language']").forEach((input) => {
+      document.querySelectorAll("input[type='radio']").forEach((input) => {
         input.addEventListener('change', (e)=>{
         data.then((json) => {
           let courses = json["results"];
-          let afterFilter;
-          if(e.target.value == "1"){
-          afterFilter = courses.filter(course => course["locale"]== "English")
+          displayCards(filterLanguage(filterRating(filterLevel(filterDuration(courses)))));
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        }); });
+      });
+      // document.querySelectorAll("input[name='radio-sub-component-rating']").forEach((input) => {
+      //   input.addEventListener('change', (e)=>{
+      //     data.then((json) => {
+      //     let courses = json["results"];
+      //     displayCards(filterRating(courses));
+          
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+
+      //   });
+      // });
+
+      // document.querySelectorAll("input[name='radio-sub-component-level']").forEach((input) => {
+      // input.addEventListener('change', (e)=>{
+      //   data.then((json) => {
+      //   let courses = json["results"]; 
+      //   displayCards(filterLevel(courses));
+        
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      // }); });});
+
+      // document.querySelectorAll("input[name='radio-sub-component-duration']").forEach((input) => {
+      // input.addEventListener('change', (e)=>{
+      //   data.then((json) => {
+      //   let courses = json["results"];
+      //   displayCards(filterDuration(courses));
+        
+      // })
+      // .catch((err) => {
+      //   console.log(err);
+      // });});});
+      
+      //Function filler 
+      const filterRating=(courses)=>{
+        const filter = document.querySelector('input[name="radio-sub-component-rating"]:checked').value;
+        return courses.filter(course => course["rating"]>= filter);
+      }
+
+      const filterLanguage=(courses)=>{
+        const filter = document.querySelector('input[name="radio-sub-component-language"]:checked').value;
+        if(filter == "1"){
+          return courses.filter(course => course["locale"]== "English")
           }else{
-            afterFilter = courses;
+            return courses;
           }
-          displayCards(afterFilter);
-          
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-        
-        });
-
-      });
-      document.querySelectorAll("input[name='radio-sub-component-rating']").forEach((input) => {
-        input.addEventListener('change', (e)=>{
-          data.then((json) => {
-          let courses = json["results"];
-          const ratingFilter = courses.filter(course => course["rating"]>= e.target.value)
-          displayCards(ratingFilter);
-          
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-
-        });
-      });
-
-      document.querySelectorAll("input[name='radio-sub-component-level']").forEach((input) => {
-      input.addEventListener('change', (e)=>{
-        data.then((json) => {
-        let courses = json["results"];
-        const ratingFilter = courses.filter(course => course["level"]== e.target.value)
-        displayCards(ratingFilter);
-        
-      })
-      .catch((err) => {
-        console.log(err);
-      }); });});
-
-      document.querySelectorAll("input[name='radio-sub-component-duration']").forEach((input) => {
-      input.addEventListener('change', (e)=>{
-        data.then((json) => {
-        let courses = json["results"];
-        let afterFilter = courses;
-        switch(e.target.value){
+      }
+      const filterLevel=(courses)=>{
+        const filter = document.querySelector('input[name="radio-sub-component-level"]:checked').value;
+        return courses.filter(course => course["level"]== filter);
+      }
+      const filterDuration=(courses)=>{
+        const filter = document.querySelector('input[name="radio-sub-component-duration"]:checked').value;
+        switch(filter){
           case "0":
-              afterFilter = courses;
+              return courses;
               break;
           case "2":
-              afterFilter = courses.filter(course => (course["duration"]/60<3));
+          return courses.filter(course => (course["duration"]/60<3));
               break;
           case "6":
-              afterFilter = courses.filter(course => (course["duration"]/60>=3 && course["duration"]/60<7));
+          return courses.filter(course => (course["duration"]/60>=3 && course["duration"]/60<7));
               break;
           case "16":
-              afterFilter = courses.filter(course => (course["duration"]/60>=7 && course["duration"]/60<17));
+          return courses.filter(course => (course["duration"]/60>=7 && course["duration"]/60<17));
               break;
           case "17":
-              afterFilter = courses.filter(course => (course["duration"]/60>=17 ));
+          return courses.filter(course => (course["duration"]/60>=17 ));
               break;
         }
-        
-        displayCards(afterFilter);
-        
-      })
-      .catch((err) => {
-        console.log(err);
-      });});});
-      
-        
+      }
 
-
-
-        const displayCards=(courses)=>{
+      const displayCards=(courses)=>{
           const container_div = document.getElementById("container");
 
            today = new Date().getTime();
