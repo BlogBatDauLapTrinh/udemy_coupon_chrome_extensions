@@ -313,14 +313,11 @@
           console.log(err);
         });
       //Set gia tri mac dinh cho cac buton radio
-      radioLanguage = document.getElementById("language1");
-      radioLanguage.checked = true;
-      radioLanguage = document.getElementById("rating_option1");
-      radioLanguage.checked = true;
-      radioLanguage = document.getElementById("level_option1");
-      radioLanguage.checked = true;
-      radioLanguage = document.getElementById("duration_option1");
-      radioLanguage.checked = true;
+      document.getElementById("language1").checked = true;      
+      document.getElementById("rating_option1").checked = true;    
+      document.getElementById("level_option1").checked = true;
+      document.getElementById("duration_option1").checked = true;
+    
 
       //them them su kien khi change button radio 
       document.querySelectorAll("input[type='radio']").forEach((input) => {
